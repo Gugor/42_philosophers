@@ -1,0 +1,21 @@
+============================================
+ * Workflow :
+ * ============================================
+ * init_data() => the data passed from arguments
+ * put_table()
+ *  |-> create_philosophers(table)
+ *  |-> create_forks(table)
+ * serve_dinner(table)
+ *  |-> check_philosophers_action(philos, forks)
+ *  |----> can_eat(philo)
+ *  |----> set_new_state(philo)
+ *  |----------> eating
+ *  |----------> sleeping
+ *  |----------> thinking
+ *  |----------> died
+ *  |----> all_have_eat_enough()
+ *  |----> has_died()
+ *  |--------> end_dinner()
+
+ []- Define data structures
+ []- Parse arguments and initialize them in settings.

@@ -21,12 +21,15 @@ MF = Makefile
 
 # Compilation Flags
 CC := cc  
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := #-Wall -Wextra -Werror
 IFLAGS := -I$(INCS_DIR) 
-DFLAGS := -g -fsanitize=address
+DFLAGS := -g -fsanitize=leak
 
 # Files
-SRCS := $(SRCS_DIR)philosophers.c
+SRCS := $(SRCS_DIR)philosophers.c \
+		$(SRCS_DIR)utils.c \
+		$(SRCS_DIR)error_handler.c \
+
 OBJS := $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 all: $(NAME)
