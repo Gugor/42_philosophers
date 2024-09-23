@@ -5,15 +5,18 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <limits.h>
 
 # define BLD_BLACK  "\33[1;30m"
 # define BLD_RED  "\33[1;31m"
+# define RED  "\33[31m"
 # define BLD_GREEN  "\33[1;32m"
 # define BLD_YELLOW  "\33[1;33m"
 # define BLD_BLUE  "\33[1;34m"
 # define BLD_MAGENTA  "\33[1;35m"
 # define BLD_CYAN  "\33[1;36m"
 # define BLD_WHITE  "\33[1;37m"
+# define WHITE  "\33[37m"
 # define RESET  "\33[0m"
 /*============================================================================*/
 /*===========================|  Structures  |================================ */
@@ -51,11 +54,20 @@ typedef enum philo_state
 	DIED
 }	t_philo_state;
 
+typedef enum e_leading_hand
+{
+	LEFT,
+	RIGHT
+}	t_leading_hand;
+
 typedef struct s_philo
 {
 	pthread_t 		*tself;
+	pthread_mutex_t *left_hand;
+	pthread_mutex_t *right_hand;
 	t_philo_state	state;
 	int     		indx;
+	t_leading_hand	ld_hand;	
 	int     		time_to_die;
 	int     		time_to_eat;
 	int     		time_to_sleep;
@@ -89,9 +101,10 @@ typedef struct s_dinner
 /*       	...Utils ...    		                                          */
 int			ft_isspace(char c);
 int			ft_atoi(const char *str);
-int			is_valid_digit(char *str);
+int			is_valid_digit(char *str, int hasmaxval);
 
 /*____________________________________________________________________________*/
 /*       	...Error Handler ...    		                                  */
+void		printf_usage_error();
 void		print_settings_err(int err);
 #endif

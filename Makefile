@@ -23,24 +23,26 @@ MF = Makefile
 CC := cc  
 CFLAGS := #-Wall -Wextra -Werror
 IFLAGS := -I$(INCS_DIR) 
-DFLAGS := -g -fsanitize=leak
+DFLAGS := -g -fsanitize=address
 
 # Files
 SRCS := $(SRCS_DIR)philosophers.c \
 		$(SRCS_DIR)utils.c \
-		$(SRCS_DIR)error_handler.c \
+		$(SRCS_DIR)error_handler.c
+
+INCS := $(INCS_DIR)philosophers.h
 
 OBJS := $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 all: $(NAME)
 
-$(NAME):: $(OBJS) 
+$(NAME):: $(OBJS) $(INCS) 
 	@printf "\n$(GREEN)=>$(RESET) Compiling $(MAGENTA)$(NAME)$(RESET)\n"
 	$(CC) $(DFLAGS) $(CFLAGS) $(IFLAGS) $(OBJS) -o $(NAME)
-$(NAME)::
+$(NAME):: $(OBJS)
 	@printf "\n$(GREEN)⭐⭐⭐ $(RESET) Compilation $(MAGENTA)$(NAME)$(RESET) completed ‍🖖 $(GREEN)⭐⭐⭐ $(RESET)\n\n"
 
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(MF) 
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(MF) $(INCS) 
 	@mkdir -p $(OBJS_DIR) 
 	@printf "$(GREEN)√ $(RESET)$(WHITE)%s$(RESET)\n  " "$<"
 	$(CC) $(DFLAGS) $(CFLAGS) $(IFLAGS) -c $< -o $@

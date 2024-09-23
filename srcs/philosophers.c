@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/22 21:06:29 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:51:15 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,30 @@
 */
 int	init_settings(int ac, char **av, t_settings *settings)
 {
-	if (is_valid_digit(av[1]))
+	if (is_valid_digit(av[1], 0))
+	{
 		settings->num_of_philos = ft_atoi(av[1]);
+		if (settings->num_of_philos > 200)
+			return (22);
+	}
 	else
 		return (2);
-	if (is_valid_digit(av[2]))
+	if (is_valid_digit(av[2], 1))
 		settings->time_to_die = ft_atoi(av[2]);
 	else
 		return (3);
-	if (is_valid_digit(av[3]))
+	if (is_valid_digit(av[3], 1))
 		settings->time_to_eat = ft_atoi(av[3]);
 	else
 		return (4);
-	if (is_valid_digit(av[4]))
+	if (is_valid_digit(av[4], 1))
 		settings->time_to_sleep = ft_atoi(av[4]);
 	else
 		return (5);
-	if (ac == 6)
-	{
-		printf("%i", ac);
-		if(is_valid_digit(av[5]))
+	if (ac == 6 && is_valid_digit(av[5], 1))
 			settings->max_meals_to_eat = ft_atoi(av[5]);
-		else
+	else if (ac == 6)
 			return (6);
-	}
 	return (0);
 }
 /*
@@ -79,7 +79,7 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 	int sttngs_err;
 
 	(void)dinner;
-	if (ac < 4)
+	if (ac <= 4 || ac > 6)
 	{
 		print_settings_err(1);
 		return (1);
@@ -109,6 +109,6 @@ int main(int ac, char **av)
 	//create_forks();
 	//create_philosophers();
 	//observe_dinner();
-	//clear_memory();
+	//clear_memory(dinner);
 	return (0);
 }
