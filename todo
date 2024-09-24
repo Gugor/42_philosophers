@@ -17,5 +17,11 @@
  *  |----> has_died()
  *  |--------> end_dinner()
 
- []- Define data structures
- []- Parse arguments and initialize them in settings.
+ [x]- Define data structures
+ [x]- Parse arguments and initialize them in settings.
+ []- create forks and pthread_mutex_t
+ []- crete philosophers initialize them and make them wait
+ []- create routine that change the states of each philosopher.
+ []- create observer that stops program then fins someone died.
+ []- create mem functions to save and clear mem.
+ []- 

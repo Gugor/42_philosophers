@@ -14,7 +14,7 @@ NAME := philosophers
 # Directories
 INCS_DIR := incs/
 SRCS_DIR := srcs/
-OBJS_DIR := .objs/
+OBJS_DIR := .objs
 
 # Dependencies
 MF = Makefile
@@ -27,12 +27,16 @@ DFLAGS := -g -fsanitize=address
 
 # Files
 SRCS := $(SRCS_DIR)philosophers.c \
+		$(SRCS_DIR)init.c \
+		$(SRCS_DIR)settings.c \
 		$(SRCS_DIR)utils.c \
-		$(SRCS_DIR)error_handler.c
+		$(SRCS_DIR)error_handler.c\
+		$(SRCS_DIR)dinner_time.c\
+		$(SRCS_DIR)memory_handler.c
 
 INCS := $(INCS_DIR)philosophers.h
 
-OBJS := $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
+OBJS := $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 all: $(NAME)
 
@@ -42,7 +46,7 @@ $(NAME):: $(OBJS) $(INCS)
 $(NAME):: $(OBJS)
 	@printf "\n$(GREEN)⭐⭐⭐ $(RESET) Compilation $(MAGENTA)$(NAME)$(RESET) completed ‍🖖 $(GREEN)⭐⭐⭐ $(RESET)\n\n"
 
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(MF) $(INCS) 
+$(OBJS_DIR)/%.o: $(SRCS_DIR)%.c $(MF) $(INCS) 
 	@mkdir -p $(OBJS_DIR) 
 	@printf "$(GREEN)√ $(RESET)$(WHITE)%s$(RESET)\n  " "$<"
 	$(CC) $(DFLAGS) $(CFLAGS) $(IFLAGS) -c $< -o $@
@@ -50,7 +54,6 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(MF) $(INCS)
 clean: $(OBJS)
 	printf "$(RED)X$(RESET) removed $<"
 	@rm -vf $< $(objs) 
-	@rm -vfR $(OBJS_DIR)   
 fclean: clean
 
 re: fclean all
