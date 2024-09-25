@@ -6,53 +6,12 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/25 17:03:22 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:11:45 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void *dinning(void *data)
-{
-	t_dinner *dinner;
-
-	dinner = (t_dinner *)data;
-	/*if (dinner->state == PREPARING)
-		printf("Preparing dinner\n");
-	else
-	{*/
-		printf("Dinning...(Time:%ld)\n", dinner->start_tm / 1000000L);
-		printf("Num of philos => %i \n", dinner->settings->num_of_philos);
-	//}
-	return (NULL) ;
-}
-/**
- * @brief It creates as philosophers and its associated threads, as
- * well as 
-*/
-int create_philos(t_dinner *dinner)
-{
-	t_settings	*stts;
-	t_philo		*philos;
-	int			indx;
-
-
-	stts = dinner->settings;
-	philos = (t_philo *)malloc(sizeof(t_philo) * stts->num_of_philos);
-	if (!philos)
-		return (1);
-	indx = -1;
-	while (++indx < stts->num_of_philos)
-	{
-		init_philo(indx, &philos[indx], dinner->settings);
-		pthread_create(&(philos[indx].pthread), NULL, dinning, dinner);
-	}
-	dinner->philos = philos;
-	indx = -1;
-	while(++indx < stts->num_of_philos)
-		pthread_join(philos[indx].pthread, NULL);
-	return (0);
-}
 /**
  * @brief It creates the necesary forks to be used by the philosophers.
  * This forks are initialized mutex.
@@ -119,7 +78,8 @@ int	init_settings(int ac, char **av, t_settings **sts)
 */
 int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 {
-	int sttngs_err;
+	int			sttngs_err;
+	
 
 	(void)dinner;
 	if (ac <= 4 || ac > 6)
@@ -127,7 +87,7 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 		print_settings_err(1);
 		return (1);
 	}
-	dinner->state = PREPARING;
+	
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
 	dinner->settings = settings;
@@ -139,6 +99,6 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
     
 	if(create_forks(&dinner->forks, settings->num_of_philos))
 		destroy_forks(&dinner->forks, settings->num_of_philos);
-	create_philos(dinner);
+	
 	return (0);
 }

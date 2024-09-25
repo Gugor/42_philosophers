@@ -6,33 +6,13 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/25 16:07:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:12:38 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-
-
-/*
-int	create_forks(t_dinner *dinner)
-{
-	int	indx;
-	int	max_forks;
-
-	indx = -1;
-	max_forks = dinner->settings->num_of_philos;
-	while(indx )
-	{
-
-	}
-
-}
-*/
-
-
-
 #include <string.h>
+
 /**
  * @brief It's a program that create multiple threads. This thread are Philosophers 
  * that eat, sleep, think and died. 
@@ -41,14 +21,18 @@ int main(int ac, char **av)
 {
 	t_dinner	*dinner; 
 	t_settings	*settings;
-	//char **av2 = (char **)calloc(sizeof(char *), 6);
+	t_waiter	waiter;
 
 	dinner = (t_dinner *)malloc(sizeof(t_dinner));
 	settings = (t_settings *)malloc(sizeof(t_settings));
 	if (init_dinner(ac, av, dinner, settings))
 		exit (EXIT_FAILURE);
-	//create_philosophers();
+	waiter.deads = 0;
+	waiter.state = PREPARING;
+	create_philos(dinner, &waiter);
 	//observe_dinner();
+	update_elapsed_time_to(&dinner->dinner_duration, dinner->start_tm, 'm');
+	printf("%sDinner duration:%s %ld %sms%s\n", MAGENTA, RESET, dinner->dinner_duration, BLD_YELLOW, RESET);
 	clear_dinner(&dinner);
 
 	return (0);

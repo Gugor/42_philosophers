@@ -72,6 +72,12 @@ typedef enum e_leading_hand
 	RIGHT
 }	t_leading_hand;
 
+typedef struct s_waiter
+{
+	t_dinner_state	state;
+	int				deads;
+}	t_waiter;
+
 typedef struct s_philo
 {
 	int     		indx;
@@ -86,6 +92,7 @@ typedef struct s_philo
 	time_t     		time_to_sleep;
 	time_t			time_alive;
 	time_t			birth;
+	t_waiter		*waiter;
 	int     		times_eaten;
 	int     		times_slept;
 	int     		times_thought;
@@ -93,12 +100,10 @@ typedef struct s_philo
 
 typedef struct s_dinner
 {
-	t_dinner_state	state;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	t_settings		*settings;
 	time_t			start_tm;
-	int				deads;
 	int				meals_served;
 	int				times_splept;
 	int				times_thought;
@@ -140,7 +145,9 @@ void		clear_dinner(t_dinner **dinner);
 
 /*____________________________________________________________________________*/
 /*       	...Philo ...            		                                  */
-t_philo		*init_philo(int indx, t_philo *philo, t_settings *stts);
+int			create_philos(t_dinner *dinner, t_waiter *waiter);
+t_philo		*init_philo(int indx, t_philo *philo, t_settings *stts,
+			t_waiter *wtr);
 
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
