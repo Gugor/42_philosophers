@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 20:01:50 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/25 14:58:34 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/25 21:00:03 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@
 /**
  * @brief It updates the elapsed time for a given value.
 */
-int	update_elapsed_time_to(time_t *new, time_t start, char precision)
+int64_t   update_elapsed_time_to(int64_t *new, int64_t start, char precision)
 {
     struct timeval		tv;
     struct timezone		*tz;
 
     if(gettimeofday(&tv, &tz) < 0)
         return (errno);
-    *new =  get_elapsed_time(start, 'm'); 
-	return (0);
+    *new =  get_elapsed_time(start, precision); 
+	return (*new);
 }
 /**
  * @brief It returns the current time with the prcision given seconds 
  * or microseconds.
  * @return `{time_t (long)}`
 */
-time_t  get_current_time(char precision)
+int64_t  get_current_time(char precision)
 {
 	struct timeval		tv;
 	struct timezone		*tz;
@@ -39,9 +39,9 @@ time_t  get_current_time(char precision)
 	if(gettimeofday(&tv, &tz) < 0)
 		return (errno);
 	if (precision == 's' || precision == 'S')
-		return ((tv.tv_sec + (tv.tv_usec / 100000)));
+		return ((tv.tv_sec + (tv.tv_usec / 1000000L)));
 	if (precision == 'm' || precision == 'M')
-		return ((tv.tv_sec * 100000) + tv.tv_usec);
+		return ((tv.tv_sec * 1000000L) + tv.tv_usec);
 	return (-1);
 }
 
@@ -49,11 +49,12 @@ time_t  get_current_time(char precision)
  * @brief It gets the time passed between two moments. You
  * can set the precision in seconds o microseconds.
 */
-time_t	get_elapsed_time(time_t start, char precision)
+int64_t	get_elapsed_time(int64_t start, char precision)
 {
-    time_t end;
+    int64_t end;
 	
 	end = get_current_time(precision);
+    printf("end: %ld - start: %ld = %ld(%ld)\n", end, start, end - start, (end - start) / 1000);
 	return (end - start);
 }
 
@@ -61,7 +62,7 @@ time_t	get_elapsed_time(time_t start, char precision)
  * @brief It stablish the new tiem for dinner. It should be used
  * when initalizing dinner;
 */
-int set_dinner_time(t_dinner *dinner)
+int64_t set_dinner_time(t_dinner *dinner)
 {
     struct timeval tv;
     struct timezone *tz;

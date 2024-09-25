@@ -8,6 +8,7 @@
 # include <limits.h>
 # include <errno.h>
 # include <sys/time.h>
+# include <stdint.h>
 
 # define BLD_BLACK  "\33[1;30m"
 # define BLD_RED  "\33[1;31m"
@@ -86,12 +87,12 @@ typedef struct s_philo
 	pthread_mutex_t *right_hand;
 	t_philo_state	state;
 	t_leading_hand	ld_hand;	
-	time_t     		time_to_die;
-	time_t     		time_to_eat;
-	time_t     		time_last_meal;
-	time_t     		time_to_sleep;
-	time_t			time_alive;
-	time_t			birth;
+	int64_t 		time_to_die;
+	int64_t 		time_to_eat;
+	int64_t 		time_last_meal;
+	int64_t 		time_to_sleep;
+	int64_t			time_alive;
+	int64_t			birth;
 	t_waiter		*waiter;
 	int     		times_eaten;
 	int     		times_slept;
@@ -103,11 +104,11 @@ typedef struct s_dinner
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	t_settings		*settings;
-	time_t			start_tm;
+	int64_t			start_tm;
 	int				meals_served;
 	int				times_splept;
 	int				times_thought;
-	time_t			dinner_duration;
+	int64_t			dinner_duration;
 }   t_dinner;
 
 
@@ -151,9 +152,12 @@ t_philo		*init_philo(int indx, t_philo *philo, t_settings *stts,
 
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
-int			set_dinner_time(t_dinner *dinner);
-time_t		get_elapsed_time(time_t start, char precision);
-time_t		get_current_time(char precision);
-int			update_elapsed_time_to(time_t *new, time_t start, char precision);
+int64_t	set_dinner_time(t_dinner *dinner);
+int64_t	get_elapsed_time(int64_t start, char precision);
+int64_t	get_current_time(char precision);
+int64_t	update_elapsed_time_to(int64_t*new, int64_t start, char precision);
 
+/*____________________________________________________________________________*/
+/*       	...Dinner Time ...    		                                  */
+void		*dinning(void *data);
 #endif

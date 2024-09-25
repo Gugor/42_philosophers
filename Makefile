@@ -30,6 +30,7 @@ SRCS := $(SRCS_DIR)philosophers.c \
 		$(SRCS_DIR)init.c \
 		$(SRCS_DIR)settings.c \
 		$(SRCS_DIR)philo.c \
+		$(SRCS_DIR)routine.c \
 		$(SRCS_DIR)utils.c \
 		$(SRCS_DIR)dinner_time.c\
 		$(SRCS_DIR)error_handler.c\
