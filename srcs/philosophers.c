@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/24 19:13:17 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:07:20 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ int	create_forks(t_dinner *dinner)
  */
 int main(int ac, char **av)
 {
-	t_dinner	dinner; 
-	t_settings	settings;
+	t_dinner	*dinner; 
+	t_settings	*settings;
 	//char **av2 = (char **)calloc(sizeof(char *), 6);
 
-	if (init_dinner(ac, av, &dinner, &settings))
+	dinner = (t_dinner *)malloc(sizeof(t_dinner));
+	settings = (t_settings *)malloc(sizeof(t_settings));
+	if (init_dinner(ac, av, dinner, settings))
 		exit (EXIT_FAILURE);
 	//create_philosophers();
 	//observe_dinner();
-	//clear_memory(dinner);
+	clear_dinner(&dinner);
+
 	return (0);
 }

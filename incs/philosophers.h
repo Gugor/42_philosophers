@@ -75,7 +75,7 @@ typedef enum e_leading_hand
 typedef struct s_philo
 {
 	int     		indx;
-	pthread_t 		*tself;
+	pthread_t 		pthread;
 	pthread_mutex_t *left_hand;
 	pthread_mutex_t *right_hand;
 	t_philo_state	state;
@@ -120,6 +120,7 @@ int			create_forks(pthread_mutex_t **forks, int amount);
 int			set_sttng_val(int *set, char *val, int err);
 int			check_settings(t_settings *sts);
 int			check_sttng(int set, int condition, int err);
+
 /*____________________________________________________________________________*/
 /*       	...Utils ...    		                                          */
 int			ft_isspace(char c);
@@ -134,9 +135,18 @@ void		print_settings_err(int err);
 /*____________________________________________________________________________*/
 /*       	...Memory Handler ...    		                                  */
 void		destroy_forks(pthread_mutex_t **data, int amount);
+void		destroy_philos(t_philo **philos, int amount);
+void		clear_dinner(t_dinner **dinner);
+
+/*____________________________________________________________________________*/
+/*       	...Philo ...            		                                  */
+t_philo		*init_philo(int indx, t_philo *philo, t_settings *stts);
 
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
 int			set_dinner_time(t_dinner *dinner);
-int			update_dinner_time(t_dinner *dinner);
+time_t		get_elapsed_time(time_t start, char precision);
+time_t		get_current_time(char precision);
+int			update_elapsed_time_to(time_t *new, time_t start, char precision);
+
 #endif

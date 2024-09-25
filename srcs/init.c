@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/24 20:29:09 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:03:22 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,14 @@ void *dinning(void *data)
 {
 	t_dinner *dinner;
 
-	dinner = data;
-	printf("Dinning...\n");
-	printf("Num of philos => %i \n", dinner->settings->num_of_philos);
+	dinner = (t_dinner *)data;
+	/*if (dinner->state == PREPARING)
+		printf("Preparing dinner\n");
+	else
+	{*/
+		printf("Dinning...(Time:%ld)\n", dinner->start_tm / 1000000L);
+		printf("Num of philos => %i \n", dinner->settings->num_of_philos);
+	//}
 	return (NULL) ;
 }
 /**
@@ -33,20 +38,19 @@ int create_philos(t_dinner *dinner)
 
 
 	stts = dinner->settings;
-	philos = (t_philo *)malloc(sizeof(pthread_t) * stts->num_of_philos);
+	philos = (t_philo *)malloc(sizeof(t_philo) * stts->num_of_philos);
 	if (!philos)
 		return (1);
 	indx = -1;
 	while (++indx < stts->num_of_philos)
 	{
-		pthread_create(philos[indx].tself, NULL, &dinning, &dinner);
+		init_philo(indx, &philos[indx], dinner->settings);
+		pthread_create(&(philos[indx].pthread), NULL, dinning, dinner);
 	}
 	dinner->philos = philos;
 	indx = -1;
 	while(++indx < stts->num_of_philos)
-	{
-		pthread_join(*philos[indx].tself, NULL);
-	}
+		pthread_join(philos[indx].pthread, NULL);
 	return (0);
 }
 /**
@@ -123,6 +127,7 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 		print_settings_err(1);
 		return (1);
 	}
+	dinner->state = PREPARING;
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
 	dinner->settings = settings;
@@ -135,6 +140,5 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 	if(create_forks(&dinner->forks, settings->num_of_philos))
 		destroy_forks(&dinner->forks, settings->num_of_philos);
 	create_philos(dinner);
-	destroy_forks(&dinner->forks, settings->num_of_philos);
 	return (0);
 }
