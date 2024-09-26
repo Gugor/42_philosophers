@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/26 12:22:29 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:21:28 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 	}
 	*pforks = forks;
 	return (0);
+}
+
+/**
+ * @brief Initialize waiter
+*/
+void init_waiter(t_waiter *wtr)
+{
+	pthread_mutex_init(&wtr->mt_state, NULL);
+	wtr->deads = 0;
+	wtr->state = PREPARING;
 }
 
 /**
@@ -80,7 +90,6 @@ int	init_settings(int ac, char **av, t_settings **sts)
 int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 {
 	int			sttngs_err;
-	
 
 	(void)dinner;
 	if (ac <= 4 || ac > 6)
@@ -88,7 +97,6 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 		print_settings_err(1);
 		return (1);
 	}
-	
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
 	dinner->settings = settings;
@@ -97,9 +105,7 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 		print_settings_err(sttngs_err);
 		return (sttngs_err);
 	}
-    
 	if(create_forks(&dinner->forks, settings->num_of_philos))
 		destroy_forks(&dinner->forks, settings->num_of_philos);
-	
 	return (0);
 }

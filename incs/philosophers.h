@@ -77,7 +77,9 @@ typedef enum e_leading_hand
 typedef struct s_waiter
 {
 	t_dinner_state	state;
+	pthread_mutex_t	mt_state;
 	int				deads;
+	pthread_mutex_t	mt_deads;
 }	t_waiter;
 
 typedef struct s_philo
@@ -121,6 +123,7 @@ typedef struct s_dinner
 int			init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings);
 int			init_settings(int ac, char **av, t_settings **sts);
 int			create_forks(pthread_mutex_t **forks, int amount);
+void		init_waiter(t_waiter *wtr);
 
 /*____________________________________________________________________________*/
 /*       	...Settings...  		                                          */
