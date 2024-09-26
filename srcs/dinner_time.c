@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 20:01:50 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/25 21:00:03 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:48:46 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int64_t	get_elapsed_time(int64_t start, char precision)
     int64_t end;
 	
 	end = get_current_time(precision);
-    printf("end: %ld - start: %ld = %ld(%ld)\n", end, start, end - start, (end - start) / 1000);
 	return (end - start);
 }
 

@@ -6,19 +6,23 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/25 21:18:17 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:49:20 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int is_dead(t_philo *this)
+static int is_dead(t_philo *this)
 {
-	if ((update_elapsed_time_to(&this->time_alive, this->time_last_meal, 'm') / 1000L) > (this->time_to_die))
+	int64_t interval;
+	
+	interval = get_elapsed_time(this->time_last_meal, 'm');
+	printf("Last meal: %ld time elapsed: %ld\n", this->time_last_meal, interval);
+	if (interval > (this->time_to_die * 1000L))
 	{
-		printf("Philo as died! ☠️\n");
+		printf("Philo as died! %ld ☠️\n", interval / 1000L);
 		this->state = DIED;
-		return(1);
+		exit(1);
 	}
 	
 }
@@ -26,7 +30,7 @@ int is_dead(t_philo *this)
 /**
  * @brief Make a philo eat
 */
-int think(t_philo *philo)
+static int think(t_philo *philo)
 {
 	
 	return (0);	
@@ -35,15 +39,20 @@ int think(t_philo *philo)
 /**
  * @brief Make a philo eat
 */
-int sleep(t_philo *philo)
+static int sleeping(t_philo *philo)
 {
+	if (philo->state == SLEEPING)
+	{
+		usleep(philo->time_to_sleep);
+		return (1);
+	}
 	return (0);	
 }
 
 /**
  * @brief Make a philo eat
 */
-int eat(t_philo *philo)
+static int eat(t_philo *philo)
 {
 		
 	return (0);	
@@ -57,19 +66,15 @@ void *dinning(void *data)
 	t_philo *this;
 
 	this = (t_philo *)data;
-	printf("Dinner state: %u\n", this->state);
+	//printf("Dinner state: %u\n", this->state);
 	while(this->waiter->state != ENDED)
 	{
-		printf("1 - Time alive %i => %ld | Time to  die: %i\n", this->indx, this->time_alive / 1000L, this->time_to_die);
-		printf("2 - Time alive %i => %ld\n", this->indx, this->time_alive / 1000L);
-		/*if (dinner->state == PREPARING)
-			printf("Preparing dinner\n");
-		else
-		{*/
-//			update_elapsed_time_to();
-			//printf("Dinning...(Time:%ld)\n", dinner->start_tm / 1000000L);
-			//printf("Num of philos => %i \n", dinner->settings->num_of_philos);
-		//}
+		//printf("Philo %i has leader hand: %i\n",this->indx, this->leader_hand);
+		//printf("Philo %i has fork in left hand: %p\n",this->indx, this->left_hand);
+		//printf("Philo %i has fork in right hand: %p\n",this->indx, this->right_hand);
+		//eat(this);
+		is_dead(this);
+		//usleep(700000);	
 	}
 	return (NULL) ;
 }

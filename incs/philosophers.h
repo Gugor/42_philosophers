@@ -9,6 +9,7 @@
 # include <errno.h>
 # include <sys/time.h>
 # include <stdint.h>
+# include <unistd.h>
 
 # define BLD_BLACK  "\33[1;30m"
 # define BLD_RED  "\33[1;31m"
@@ -70,7 +71,7 @@ typedef enum philo_state
 typedef enum e_leading_hand
 {
 	LEFT,
-	RIGHT
+	RIGHT,
 }	t_leading_hand;
 
 typedef struct s_waiter
@@ -86,7 +87,7 @@ typedef struct s_philo
 	pthread_mutex_t *left_hand;
 	pthread_mutex_t *right_hand;
 	t_philo_state	state;
-	t_leading_hand	ld_hand;	
+	t_leading_hand	leader_hand;	
 	int64_t 		time_to_die;
 	int64_t 		time_to_eat;
 	int64_t 		time_last_meal;
@@ -146,8 +147,8 @@ void		clear_dinner(t_dinner **dinner);
 
 /*____________________________________________________________________________*/
 /*       	...Philo ...            		                                  */
-int			create_philos(t_dinner *dinner, t_waiter *waiter);
-t_philo		*init_philo(int indx, t_philo *philo, t_settings *stts,
+int			register_philos(t_dinner *dinner, t_waiter *waiter);
+t_philo		*init_philo(int indx, t_philo *philo, t_dinner *dinner,
 			t_waiter *wtr);
 
 /*____________________________________________________________________________*/

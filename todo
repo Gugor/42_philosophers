@@ -3,7 +3,7 @@
  * ============================================
  * init_data() => the data passed from arguments
  * put_table()
- *  |-> create_philosophers(table)
+ *  |-> register_philosophers(table)
  *  |-> create_forks(table)
  * serve_dinner(table)
  *  |-> check_philosophers_action(philos, forks)

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/25 18:11:45 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:22:29 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 	{
 		if(pthread_mutex_init(&forks[indx], NULL))	
 			return (1);
+		printf("Fork %i (%p)\n", indx, &forks[indx]);
 	}
 	*pforks = forks;
 	return (0);
