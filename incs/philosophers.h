@@ -65,6 +65,7 @@ typedef enum philo_state
 	EATING,
 	SLEEPING,
 	THINKING,
+	FORK,
 	DIED
 }	t_philo_state;
 
@@ -72,12 +73,13 @@ typedef enum e_leading_hand
 {
 	LEFT,
 	RIGHT,
-}	t_leading_hand;
+}	t_ph_hand;
 
 typedef struct s_waiter
 {
 	t_dinner_state	state;
 	pthread_mutex_t	mt_state;
+	pthread_mutex_t mt_print;
 	int				deads;
 	pthread_mutex_t	mt_deads;
 }	t_waiter;
@@ -89,7 +91,7 @@ typedef struct s_philo
 	pthread_mutex_t *left_hand;
 	pthread_mutex_t *right_hand;
 	t_philo_state	state;
-	t_leading_hand	leader_hand;	
+	t_ph_hand		leader_hand;	
 	int64_t 		time_to_die;
 	int64_t 		time_to_eat;
 	int64_t 		time_last_meal;
@@ -98,6 +100,7 @@ typedef struct s_philo
 	int64_t			birth;
 	t_waiter		*waiter;
 	int     		times_eaten;
+	int     		max_meals_to_eat;
 	int     		times_slept;
 	int     		times_thought;
 }   t_philo;
@@ -146,7 +149,7 @@ void		print_settings_err(int err);
 /*       	...Memory Handler ...    		                                  */
 void		destroy_forks(pthread_mutex_t **data, int amount);
 void		destroy_philos(t_philo **philos, int amount);
-void		clear_dinner(t_dinner **dinner);
+void		clear_dinner(t_dinner **dinner, t_waiter *waiter);
 
 /*____________________________________________________________________________*/
 /*       	...Philo ...            		                                  */
@@ -156,12 +159,30 @@ t_philo		*init_philo(int indx, t_philo *philo, t_dinner *dinner,
 
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
-int64_t	set_dinner_time(t_dinner *dinner);
-int64_t	get_elapsed_time(int64_t start, char precision);
-int64_t	get_current_time(char precision);
-int64_t	update_elapsed_time_to(int64_t*new, int64_t start, char precision);
+int64_t		set_dinner_time(t_dinner *dinner);
+int64_t		get_elapsed_time(int64_t start, char precision);
+int64_t		get_current_time(char precision);
+int64_t		update_elapsed_time_to(int64_t*new, int64_t start, char precision);
 
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
+int			is_dead(t_philo *this);
 void		*dinning(void *data);
+
+/*____________________________________________________________________________*/
+/*       	...Philos State ...      		                                  */
+int			thinking(t_philo *philo);
+int			sleeping(t_philo *philo);
+int			eating(t_philo *philo);
+/*____________________________________________________________________________*/
+/*       	...Dinner Time ...    		                                  */
+int			check_dead_state(t_philo *philo);
+void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
+void		set_dead_state(t_waiter *waiter);
+int			get_fork(t_philo *this, t_ph_hand hand);
+void		put_fork(t_philo *this, t_ph_hand hand);
+/*____________________________________________________________________________*/
+/*       	...Dinner Time ...    		                                  */
+void		print(t_philo *philo, t_philo_state state);
+
 #endif

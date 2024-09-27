@@ -24,4 +24,6 @@
  []- create routine that change the states of each philosopher.
  []- create observer that stops program then fins someone died.
  []- create mem functions to save and clear mem.
- []- 
+ []- check break conditions
+    [] - time_between_meals(current_time - time_las_meal) > time_to_die
+    [] - times_eaten > max_meals

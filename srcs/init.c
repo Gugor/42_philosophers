@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/26 19:21:28 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:38:37 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,12 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 */
 void init_waiter(t_waiter *wtr)
 {
-	pthread_mutex_init(&wtr->mt_state, NULL);
+
 	wtr->deads = 0;
 	wtr->state = PREPARING;
+	pthread_mutex_init(&wtr->mt_state, NULL);
+	pthread_mutex_init(&wtr->mt_deads, NULL);
+	pthread_mutex_init(&wtr->mt_print, NULL);
 }
 
 /**
