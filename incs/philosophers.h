@@ -65,7 +65,10 @@ typedef enum philo_state
 	EATING,
 	SLEEPING,
 	THINKING,
-	FORK,
+	FORK_LEFT,
+	FORK_RIGHT,
+	PUT_LEFT,
+	PUT_RIGHT,
 	DIED
 }	t_philo_state;
 
@@ -185,4 +188,7 @@ void		put_fork(t_philo *this, t_ph_hand hand);
 /*       	...Dinner Time ...    		                                  */
 void		print(t_philo *philo, t_philo_state state);
 
+/*____________________________________________________________________________*/
+/*       	...Philo Wait ...       		                                  */
+int			philo_uwait(int64_t mcs, t_philo *philo);
 #endif

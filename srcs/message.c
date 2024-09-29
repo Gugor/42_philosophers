@@ -12,37 +12,62 @@
 
 #include "philosophers.h"
 
+static void print_format_fork(t_philo *philo, char *msg, pthread_mutex_t *mt_print)
+{
+    int64_t time;
+
+    time = get_elapsed_time(philo->time_last_meal, 'm');
+    pthread_mutex_lock(mt_print);
+    printf("%ld ", philo->time_last_meal);
+    printf("%s[%li]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
+    BLD_MAGENTA, RESET, philo->indx);
+	if (philo->leader_hand == LEFT && philo->state == PUT_LEFT)
+    	printf("%s  LEFTHANDED(%p)",msg, &(*philo->left_hand));
+	if (philo->leader_hand == LEFT && philo->state == PUT_RIGHT)
+    	printf("%s  LEFTHANDED(%p)",msg, &(*philo->right_hand));
+	if (philo->leader_hand == RIGHT && philo->state == PUT_LEFT)
+    	printf("%s  RIGHTHANDED(%p)",msg, &(*philo->left_hand));
+	if (philo->leader_hand == RIGHT && philo->state == PUT_RIGHT)
+    	printf("%s  RIGHTHANDED(%p)",msg, &(*philo->right_hand));
+	printf("\n");
+    pthread_mutex_unlock(mt_print);
+}
+
 static void print_format(t_philo *philo, char *msg, pthread_mutex_t *mt_print)
 {
     int64_t time;
 
-    time = get_elapsed_time(philo->time_last_meal, 'm') / 1000L;
+    time = get_elapsed_time(philo->time_last_meal, 'm');
     pthread_mutex_lock(mt_print);
     printf("%ld ", philo->time_last_meal);
-    printf("%s[%li]%s %sPhilo%s %i ", BLD_YELLOW, time, RESET , 
+    printf("%s[%li]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
     BLD_MAGENTA, RESET, philo->indx);
     printf("%s\n",msg);
     pthread_mutex_unlock(mt_print);
-    /*
-    write(1, "[", 1);
-    write(1, time, sizeof(time));
-    write(1, "]", 1);
-    write(1, "Philo ", 6);
-    write(1, indx, sizeof(indx));
-    write(1, "msg\n", ft_strlen(msg));
-    */
 }
 
 void print(t_philo *philo, t_philo_state state)
 {
     if (state == EATING)
-        print_format(philo, " is eating!\n", &philo->waiter->mt_print);
+        print_format(philo, " is eating!", &philo->waiter->mt_print);
     if (state == SLEEPING)
-        print_format(philo, " is sleeping!\n", &philo->waiter->mt_print);
+        print_format(philo, " is sleeping! 😪💤", &philo->waiter->mt_print);
     if (state == THINKING)
-        print_format(philo, " is thinking!\n", &philo->waiter->mt_print);
+        print_format(philo, " is thinking! 🤔💭", &philo->waiter->mt_print);
     if (state == DIED)
-        print_format(philo, " has died!\n", &philo->waiter->mt_print);
-    if (state == FORK)
-        print_format(philo, " has taken fork!\n", &philo->waiter->mt_print);
+        print_format(philo, " has died! 🪦 ⚰💀", &philo->waiter->mt_print);
+    if (state == FORK_LEFT)
+        print_format(philo, " has taken left fork! 🫱", &philo->waiter->mt_print);
+    if (state == FORK_RIGHT)
+        print_format(philo, " has taken right fork! 🫲", &philo->waiter->mt_print);
+    if (state == PUT_LEFT)
+	{
+		philo->state = PUT_LEFT;
+        print_format_fork(philo, " has put down left fork! 🫳", &philo->waiter->mt_print);
+	}
+    if (state == PUT_RIGHT)
+	{
+		philo->state = PUT_RIGHT;
+        print_format_fork(philo, " has put down right fork! 🫳", &philo->waiter->mt_print);
+	}
 }

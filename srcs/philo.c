@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/26 12:47:39 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/29 22:49:13 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,7 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 	indx = -1;
 	while (++indx < stts->num_of_philos)
 	{
-		//printf("Creating Philo %i\n", indx);
 		init_philo(indx, &philos[indx], dinner, waiter);
-		//printf("Philo %i has leader hand: %i\n",philos[indx].indx, philos[indx].leader_hand);
-		//printf("Philo %i has fork in left hand: %p\n",philos[indx].indx, philos[indx].left_hand);
-		//printf("Philo %i has fork in right hand: %p\n",philos[indx].indx, philos[indx].right_hand);
-		philos[indx].time_last_meal = get_current_time('m');
 		pthread_create(&(philos[indx].pthread), NULL, dinning, &philos[indx]);
 	}
 	dinner->philos = philos;
@@ -55,7 +50,9 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 static void select_fork_for_hands(pthread_mutex_t *forks, t_philo *owner, int num)
 {
 	owner->left_hand = &forks[owner->indx];
+	//printf("Philo %i, left hand fork (%p)\n", owner->indx, &owner->left_hand);
 	owner->right_hand = &forks[(owner->indx + 1) % num];
+	//printf("Philo %i, right hand fork (%p)\n", owner->indx, &owner->right_hand);
 }
 
 /**

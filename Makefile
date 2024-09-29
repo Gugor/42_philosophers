@@ -33,6 +33,7 @@ SRCS := $(SRCS_DIR)philosophers.c \
 		$(SRCS_DIR)routine.c \
 		$(SRCS_DIR)philo_states.c \
 		$(SRCS_DIR)mutex_handler.c \
+		$(SRCS_DIR)philo_wait.c \
 		$(SRCS_DIR)utils.c \
 		$(SRCS_DIR)dinner_time.c\
 		$(SRCS_DIR)error_handler.c\

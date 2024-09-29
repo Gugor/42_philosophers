@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:48:15 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/27 18:58:46 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/29 22:13:01 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 int check_dead_state(t_philo *philo)
 {
-	t_dinner_state state;
+	t_dinner_state	state;
+	int				deads;
 
+	deads = 0;
 	pthread_mutex_lock(&philo->waiter->mt_state);
 	state = philo->waiter->state;
 	pthread_mutex_unlock(&philo->waiter->mt_state);
-	if (state == ENDED)
+	pthread_mutex_lock(&philo->waiter->mt_deads);
+	deads = philo->waiter->deads;
+	pthread_mutex_unlock(&philo->waiter->mt_deads);
+	if (state == ENDED || deads > 0)
 		return (0);
 	return (1);
 }
@@ -57,7 +62,10 @@ int get_fork(t_philo *this, t_ph_hand hand)
 		pthread_mutex_lock(this->left_hand);
 	if (hand == RIGHT)
 		pthread_mutex_lock(this->right_hand);
-	print(this, FORK);
+	if (hand == LEFT)
+		print(this, FORK_LEFT);
+	if (hand == RIGHT)
+		print(this, FORK_RIGHT);
 	return (1);
 }
 
@@ -69,6 +77,10 @@ void put_fork(t_philo *this, t_ph_hand hand)
 {
 	if (hand == LEFT)
 		pthread_mutex_unlock(this->left_hand);
+	if (hand == LEFT)
+		print(this, PUT_LEFT);
 	if (hand == RIGHT)
 		pthread_mutex_unlock(this->right_hand);
+	if (hand == RIGHT)
+		print(this, PUT_RIGHT);
 }

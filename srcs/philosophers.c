@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/27 16:37:09 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/28 15:13:05 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,12 @@ int main(int ac, char **av)
 		exit (EXIT_FAILURE);
 	init_waiter(&waiter);
 	register_philos(dinner, &waiter);
-	//observe_dinner();
-	if (waiter.state == 1)
+	if (waiter.state == ENDED)
 	{
-		
+		update_elapsed_time_to(&dinner->dinner_duration, dinner->start_tm, 'm');
+		printf("%sDinner duration:%s %ld %sms%s\n", MAGENTA, RESET, dinner->dinner_duration, BLD_YELLOW, RESET);
+		clear_dinner(&dinner, &waiter);
 	}
-	update_elapsed_time_to(&dinner->dinner_duration, dinner->start_tm, 'm');
-	printf("%sDinner duration:%s %ld %sms%s\n", MAGENTA, RESET, dinner->dinner_duration, BLD_YELLOW, RESET);
-	clear_dinner(&dinner, &waiter);
 
 	return (0);
 }
