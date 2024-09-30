@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/30 18:16:38 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:09:36 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int is_dead(t_philo *this)
 	interval = get_elapsed_time(this->time_last_meal, 'm');
 	if (interval > (this->time_to_die * 1000L))
 	{
-		set_dead_state(this->waiter);
+		set_dead_state(this->waiter, this->indx);
+		set_waiter_state(this->waiter, ENDED);
 		update_elapsed_time_to(&this->time_alive, this->birth, 'm');
 		return (1);
 	}

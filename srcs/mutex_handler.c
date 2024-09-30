@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:48:15 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/30 18:17:47 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:08:35 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int check_dinner_state(t_philo *philo)
 {
 	t_dinner_state	state;
 	int				deads;
-
+	is_dead(philo);
 	deads = 0;
 	pthread_mutex_lock(&philo->waiter->mt_state);
 	state = philo->waiter->state;
@@ -24,7 +24,7 @@ int check_dinner_state(t_philo *philo)
 	pthread_mutex_lock(&philo->waiter->mt_deads);
 	deads = philo->waiter->deads;
 	pthread_mutex_unlock(&philo->waiter->mt_deads);
-	if (state == ENDED || deads > 0 || philo->state == FULL)
+	if (state == ENDED || philo->state == FULL)
 		return (0);
 	return (1);
 }
@@ -44,11 +44,10 @@ void set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
  * @brief It uses a mutex to set the philosopher state.
  * @returns `{void}`
 */
-void set_dead_state(t_waiter *waiter)
+void set_dead_state(t_waiter *waiter, int indx)
 {
 	pthread_mutex_lock(&waiter->mt_deads);
-	waiter->deads += 1;
-	set_waiter_state(waiter, ENDED);
+	waiter->deads = indx;
 	pthread_mutex_unlock(&waiter->mt_deads);
 }
 

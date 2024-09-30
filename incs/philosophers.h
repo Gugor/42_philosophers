@@ -185,7 +185,7 @@ int			eating(t_philo *philo);
 /*       	...Dinner Time ...    		                                  */
 int			check_dinner_state(t_philo *philo);
 void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
-void		set_dead_state(t_waiter *waiter);
+void		set_dead_state(t_waiter *waiter, int indx);
 int			get_fork(t_philo *this, t_ph_hand hand);
 void		put_fork(t_philo *this, t_ph_hand hand);
 /*____________________________________________________________________________*/

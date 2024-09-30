@@ -50,6 +50,8 @@ static void print_format(t_philo *philo, char *msg, pthread_mutex_t *mt_print)
 
 void print(t_philo *philo, t_philo_state state)
 {
+    if (philo->waiter->state == ENDED)
+        return ;
     if (state == EATING)
         print_format(philo, " is eating❕ 🥣", &philo->waiter->mt_print);
     if (state == SLEEPING)
