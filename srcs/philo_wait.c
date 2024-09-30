@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 16:12:32 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/29 22:46:47 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:14:50 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,17 @@ int philo_uwait(int64_t mcs, t_philo *philo)
 	start = get_current_time('m');
 	elapsed = get_elapsed_time(start, 'm');
 	remanent = mcs - elapsed;
-	//printf("PH[%i][0]ELAPSED TIME: %ld || REMAINING TIME %ld (%ld)\n", philo->indx, elapsed, remanent, mcs);
 	if (remanent > 1000)
-		usleep(remanent / 2);
-	indx = 0;
+		usleep(remanent / 8);
+	indx = 1;
 	while (elapsed < mcs)
 	{
 		if(is_dead(philo))	
-		{
-			set_dead_state(philo->waiter);
 			return (1);
-		}
 		elapsed = get_elapsed_time(start, 'm');
 		remanent = mcs - elapsed;
-		//printf("PH[%i][%zu]ELAPSED TIME: %ld || REMAINING TIME %ld (%ld)\n",philo->indx, ++indx, elapsed, remanent, mcs);
 		if (remanent > 1000)
-			usleep(remanent / 2);
+			usleep(remanent / 8);
 	}
 	return (0);
 }

@@ -6,13 +6,11 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/29 22:49:13 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:54:41 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-
 
 /**
  * @brief It creates as philosophers and its associated threads, as
@@ -70,8 +68,8 @@ t_philo *init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	select_fork_for_hands(dinner->forks, philo, stts->num_of_philos);
 	philo->state = STOPED;
 	philo->time_to_die = stts->time_to_die;
-	philo->time_to_eat = stts->time_to_die;
-	philo->time_to_sleep = stts->time_to_die;
+	philo->time_to_eat = stts->time_to_eat;
+	philo->time_to_sleep = stts->time_to_sleep;
 	philo->times_eaten = 0; 
 	philo->times_slept = 0; 
 	philo->times_thought = 0; 

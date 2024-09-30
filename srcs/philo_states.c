@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/29 22:48:12 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:41:56 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@
 */
 int thinking(t_philo *philo)
 {
-	if (check_dead_state(philo) == 0)
-		return (1);
-    print(philo, THINKING);
-    philo->state = THINKING;
-    philo->times_thought++;
-  //  printf("Thinking: is dead?\n");
-    if (is_dead(philo))
-        return (1);
+  if (check_dinner_state(philo) == 0)
+    return (1);
+  print(philo, THINKING);
+  philo->state = THINKING;
+  philo->times_thought++;
+  if (is_dead(philo))
+  {
+    print(philo, DIED);
+    return (1);
+  }
 	return (0);	
 }
 
@@ -33,16 +35,17 @@ int thinking(t_philo *philo)
 */
 int sleeping(t_philo *philo)
 {
-	if (check_dead_state(philo) == 0)
+	if (check_dinner_state(philo) == 0)
 		return (1);
-    print(philo, SLEEPING);
     philo->state = SLEEPING;
-   // philo_uwait(philo->time_to_sleep * 1000L, philo); 
-	usleep(philo->time_to_sleep * 1000L);
-    philo->time_to_sleep++;
-    //printf("Sleeping: is dead?\n");
+    philo_uwait(philo->time_to_sleep * 1000L, philo); 
+    philo->times_slept++;
     if (is_dead(philo))
+    {
+        print(philo, DIED);
         return (1);
+    }
+    print(philo, SLEEPING);
 	return (0);	
 }
 
@@ -51,20 +54,26 @@ int sleeping(t_philo *philo)
 */
 int eating(t_philo *philo)
 {
-	if (check_dead_state(philo) == 0)
+	if (check_dinner_state(philo) == 0 || is_dead(philo))
 		return (1);
     get_fork(philo, philo->leader_hand);
     get_fork(philo, !philo->leader_hand);
+    philo->time_last_meal = get_current_time('m');
+    philo->state = EATING;
+    philo_uwait(philo->time_to_eat * 1000L , philo); 
+    philo->times_eaten++;
+    if (is_dead(philo) || has_eaten_enough(philo))
+    {
+        if (is_dead(philo))
+          print(philo, DIED);
+        if (has_eaten_enough(philo))
+          print(philo, FULL);
+        pthread_mutex_unlock(philo->left_hand);
+        pthread_mutex_unlock(philo->right_hand);
+        return (1);
+    }
     print(philo, EATING);
     put_fork(philo, philo->leader_hand);
     put_fork(philo, !philo->leader_hand);
-    philo->state = EATING;
-   // philo_uwait(philo->time_to_eat * 1000L , philo); 
-	usleep(philo->time_to_eat * 1000L);
-    philo->time_last_meal = get_current_time('m');
-    philo->times_eaten++;
-   // printf("Eating: is dead?\n");
-    if (is_dead(philo))
-        return (1);
 	return (0);	
 }

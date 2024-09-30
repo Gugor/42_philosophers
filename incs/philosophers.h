@@ -65,6 +65,7 @@ typedef enum philo_state
 	EATING,
 	SLEEPING,
 	THINKING,
+	FULL,
 	FORK_LEFT,
 	FORK_RIGHT,
 	PUT_LEFT,
@@ -85,6 +86,8 @@ typedef struct s_waiter
 	pthread_mutex_t mt_print;
 	int				deads;
 	pthread_mutex_t	mt_deads;
+	int64_t			dinner_start;
+	pthread_mutex_t	mt_start;
 }	t_waiter;
 
 typedef struct s_philo
@@ -129,7 +132,7 @@ typedef struct s_dinner
 int			init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings);
 int			init_settings(int ac, char **av, t_settings **sts);
 int			create_forks(pthread_mutex_t **forks, int amount);
-void		init_waiter(t_waiter *wtr);
+void		init_waiter(t_waiter *wtr, t_dinner *dinner);
 
 /*____________________________________________________________________________*/
 /*       	...Settings...  		                                          */
@@ -169,6 +172,7 @@ int64_t		update_elapsed_time_to(int64_t*new, int64_t start, char precision);
 
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
+int			has_eaten_enough(t_philo *this);
 int			is_dead(t_philo *this);
 void		*dinning(void *data);
 
@@ -179,13 +183,13 @@ int			sleeping(t_philo *philo);
 int			eating(t_philo *philo);
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
-int			check_dead_state(t_philo *philo);
+int			check_dinner_state(t_philo *philo);
 void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
 void		set_dead_state(t_waiter *waiter);
 int			get_fork(t_philo *this, t_ph_hand hand);
 void		put_fork(t_philo *this, t_ph_hand hand);
 /*____________________________________________________________________________*/
-/*       	...Dinner Time ...    		                                  */
+/*       	...Message ...          		                                  */
 void		print(t_philo *philo, t_philo_state state);
 
 /*____________________________________________________________________________*/

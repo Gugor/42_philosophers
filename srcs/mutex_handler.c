@@ -6,13 +6,13 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:48:15 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/29 22:13:01 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:17:47 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int check_dead_state(t_philo *philo)
+int check_dinner_state(t_philo *philo)
 {
 	t_dinner_state	state;
 	int				deads;
@@ -24,7 +24,7 @@ int check_dead_state(t_philo *philo)
 	pthread_mutex_lock(&philo->waiter->mt_deads);
 	deads = philo->waiter->deads;
 	pthread_mutex_unlock(&philo->waiter->mt_deads);
-	if (state == ENDED || deads > 0)
+	if (state == ENDED || deads > 0 || philo->state == FULL)
 		return (0);
 	return (1);
 }

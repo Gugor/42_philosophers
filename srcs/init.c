@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/28 16:36:18 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:53:53 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,16 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 /**
  * @brief Initialize waiter
 */
-void init_waiter(t_waiter *wtr)
+void init_waiter(t_waiter *wtr, t_dinner *dinner)
 {
 
 	wtr->deads = 0;
 	wtr->state = PREPARING;
+	wtr->dinner_start = dinner->start_tm;
 	pthread_mutex_init(&wtr->mt_state, NULL);
 	pthread_mutex_init(&wtr->mt_deads, NULL);
 	pthread_mutex_init(&wtr->mt_print, NULL);
+	pthread_mutex_init(&wtr->mt_start, NULL);
 }
 
 /**
