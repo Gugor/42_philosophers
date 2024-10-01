@@ -31,6 +31,7 @@ SRCS := $(SRCS_DIR)philosophers.c \
 		$(SRCS_DIR)settings.c \
 		$(SRCS_DIR)philo.c \
 		$(SRCS_DIR)routine.c \
+		$(SRCS_DIR)waiter.c \
 		$(SRCS_DIR)philo_states.c \
 		$(SRCS_DIR)mutex_handler.c \
 		$(SRCS_DIR)philo_wait.c \

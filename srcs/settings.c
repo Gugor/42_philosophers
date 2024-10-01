@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:09:52 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/24 16:50:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:22:53 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int check_settings(t_settings *sts)
     val = sts->time_to_sleep;
     if ((err = check_sttng(val ,(val < 60), 25)) > 0)
 	    return (err); 
-    val = sts->max_meals_to_eat;
+    val = sts->min_meals_to_eat;
     if (val > 0 && (err = check_sttng(val , 0, 21)) > 0)
 	    return (err); 
     return (0);

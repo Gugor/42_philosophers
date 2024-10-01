@@ -56,7 +56,7 @@ typedef struct s_settings
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
-	int max_meals_to_eat;
+	int min_meals_to_eat;
 }   t_settings;
 
 typedef enum philo_state
@@ -84,7 +84,7 @@ typedef struct s_waiter
 	t_dinner_state	state;
 	pthread_mutex_t	mt_state;
 	pthread_mutex_t mt_print;
-	int				deads;
+	int				whoisdead;
 	pthread_mutex_t	mt_deads;
 	int64_t			dinner_start;
 	pthread_mutex_t	mt_start;
@@ -103,10 +103,11 @@ typedef struct s_philo
 	int64_t 		time_last_meal;
 	int64_t 		time_to_sleep;
 	int64_t			time_alive;
+	int64_t			time_of_death;
 	int64_t			birth;
 	t_waiter		*waiter;
 	int     		times_eaten;
-	int     		max_meals_to_eat;
+	int     		min_meals_to_eat;
 	int     		times_slept;
 	int     		times_thought;
 }   t_philo;
@@ -184,15 +185,23 @@ int			eating(t_philo *philo);
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
 int			check_dinner_state(t_philo *philo);
-void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
-void		set_dead_state(t_waiter *waiter, int indx);
 int			get_fork(t_philo *this, t_ph_hand hand);
 void		put_fork(t_philo *this, t_ph_hand hand);
 /*____________________________________________________________________________*/
 /*       	...Message ...          		                                  */
+void		print_format_death(t_philo *philo, char *msg,
+			pthread_mutex_t *mt_print);
 void		print(t_philo *philo, t_philo_state state);
 
 /*____________________________________________________________________________*/
 /*       	...Philo Wait ...       		                                  */
 int			philo_uwait(int64_t mcs, t_philo *philo);
+
+/*____________________________________________________________________________*/
+/*       	...Waiter ...           		                                  */
+void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
+int			get_waiter_state(t_waiter *wtr);
+void		set_dead_state(t_waiter *waiter, int indx);
+int			get_whoisdead(t_waiter *waiter);
+
 #endif

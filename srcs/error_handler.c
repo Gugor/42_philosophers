@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:54:22 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/24 17:32:29 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:22:53 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void printf_usage_error()
     printf(" [TIME_TO_DIE]");
     printf(" [TIME_TO_EAT]");
     printf(" [TIME_TO_SLEEP]");
-    printf(" [MAX_MEALS_TO_EAT]%s\n", RESET);
+    printf(" [min_meals_to_eat]%s\n", RESET);
     printf("    [NUM_OF_PHILOS] %s      > 0   %s && %s≤ 200%s\n",
     BLD_MAGENTA, RESET, BLD_MAGENTA, RESET);
     printf("    [TIME_TO_DIE] %s        > 0 ms%s && %s≥ 60 ms%s\n",
@@ -28,7 +28,7 @@ void printf_usage_error()
     BLD_MAGENTA, RESET, BLD_MAGENTA, RESET);
     printf("    [TIME_TO_SLEEP] %s      > 0 ms%s && %s≥ 60 ms%s\n",
     BLD_MAGENTA, RESET, BLD_MAGENTA, RESET);
-    printf("    [MAX_MEALS_TO_EAT] %s   > 0   %s && %s≤ 999999999%s\n",
+    printf("    [min_meals_to_eat] %s   > 0   %s && %s≤ 999999999%s\n",
     BLD_MAGENTA, RESET, BLD_MAGENTA, RESET);
     printf("\n\n");
 }
@@ -54,7 +54,7 @@ void print_input_err(int err)
         printf(" %s- 🛌  [time_to_sleep]%s should be a valid positive number", 
         BLD_WHITE, RESET);
     if (err == 6)
-        printf(" %s- 🍽️  [max_meals_to_eat]%s should be a valid positive number",
+        printf(" %s- 🍽️  [min_meals_to_eat]%s should be a valid positive number",
         BLD_WHITE, RESET);
     if (err > 1 && err < 7)
         printf("%s > 0 && ≤ 999999999%s\n", BLD_GREEN, RESET);

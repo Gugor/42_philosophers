@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/30 13:54:41 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:25:26 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 	t_philo		*philos;
 	int			indx;
 
-
 	stts = dinner->settings;
+	if(stts->num_of_philos == 1 || stts->min_meals_to_eat <= 0)
+	{
+		printf("Philo 0  has died❕ 🪦 ⚰💀\n");
+		return (-1);
+	}
 	philos = (t_philo *)malloc(sizeof(t_philo) * stts->num_of_philos);
 	if (!philos)
 		return (1);
@@ -34,6 +38,7 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 		pthread_create(&(philos[indx].pthread), NULL, dinning, &philos[indx]);
 	}
 	dinner->philos = philos;
+	set_waiter_state(waiter, DINNING);
 	indx = -1;
 	while(++indx < stts->num_of_philos)
 		pthread_join(philos[indx].pthread, NULL);

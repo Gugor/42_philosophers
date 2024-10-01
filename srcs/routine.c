@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/30 19:09:36 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:23:03 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 */
 int has_eaten_enough(t_philo *this)
 {
-	if (this->times_eaten == this->max_meals_to_eat)
+	if (this->min_meals_to_eat <= 0)
+		return (0);
+	if (this->times_eaten >= this->min_meals_to_eat)
 	{
 		set_waiter_state(this->waiter, ENDED);
 		print(this, FULL);
@@ -41,9 +43,10 @@ int is_dead(t_philo *this)
 	int64_t interval;
 	
 	interval = get_elapsed_time(this->time_last_meal, 'm');
-	if (interval > (this->time_to_die * 1000L))
+	if (interval > this->time_to_die * 1000L)
 	{
 		set_dead_state(this->waiter, this->indx);
+		this->time_of_death = get_current_time('m');
 		set_waiter_state(this->waiter, ENDED);
 		update_elapsed_time_to(&this->time_alive, this->birth, 'm');
 		return (1);
@@ -62,6 +65,8 @@ void *dinning(void *data)
 	this = (t_philo *)data;
 	while (42)
 	{
+		if (get_waiter_state(this->waiter) == PREPARING)
+			continue;
 		if (this->state == STOPED)
 		{
 			this->time_last_meal = get_current_time('m');

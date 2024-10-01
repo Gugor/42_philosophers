@@ -17,11 +17,11 @@ static void print_format_fork(t_philo *philo, char *msg, pthread_mutex_t *mt_pri
     int64_t time;
 
     pthread_mutex_lock(mt_print);
-    printf("%s|%ld|%s ", BLD_BLACK, 
+    printf("%s|%ldus|%s ", BLD_BLACK, 
         get_elapsed_time(philo->waiter->dinner_start, 'm'), RESET);
     time = get_elapsed_time(philo->time_last_meal, 'm');
-    printf("🧔 %s[%li]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
-    BLD_MAGENTA, RESET, philo->indx);
+    printf("🧔 %s[%lims]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
+    BLD_MAGENTA, RESET, philo->indx + 1);
 	if (philo->leader_hand == LEFT && philo->state == PUT_LEFT)
     	printf("%s  LEFTHANDED(%p)",msg, &(*philo->left_hand));
 	if (philo->leader_hand == LEFT && philo->state == PUT_RIGHT)
@@ -33,24 +33,36 @@ static void print_format_fork(t_philo *philo, char *msg, pthread_mutex_t *mt_pri
 	printf("\n");
     pthread_mutex_unlock(mt_print);
 }
+void print_format_death(t_philo *philo, char *msg, pthread_mutex_t *mt_print)
+{
+    int64_t time;
 
+    pthread_mutex_lock(mt_print);
+    printf("%s|%ldus|%s ", BLD_BLACK, 
+        get_elapsed_time(philo->waiter->dinner_start, 'm'), RESET);
+    time = philo->time_of_death - philo->waiter->dinner_start;
+    printf("🧔 %s[%lims]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
+    BLD_MAGENTA, RESET, philo->indx + 1);
+    printf("%s\n",msg);
+    pthread_mutex_unlock(mt_print);
+}
 static void print_format(t_philo *philo, char *msg, pthread_mutex_t *mt_print)
 {
     int64_t time;
 
     pthread_mutex_lock(mt_print);
-    printf("%s|%ld|%s ", BLD_BLACK, 
+    printf("%s|%ldus|%s ", BLD_BLACK, 
         get_elapsed_time(philo->waiter->dinner_start, 'm'), RESET);
     time = get_elapsed_time(philo->time_last_meal, 'm');
-    printf("🧔 %s[%li]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
-    BLD_MAGENTA, RESET, philo->indx);
+    printf("🧔 %s[%lims]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET , 
+    BLD_MAGENTA, RESET, philo->indx + 1);
     printf("%s\n",msg);
     pthread_mutex_unlock(mt_print);
 }
 
 void print(t_philo *philo, t_philo_state state)
 {
-    if (philo->waiter->state == ENDED)
+    if (get_waiter_state(philo->waiter) == ENDED)
         return ;
     if (state == EATING)
         print_format(philo, " is eating❕ 🥣", &philo->waiter->mt_print);
@@ -58,8 +70,6 @@ void print(t_philo *philo, t_philo_state state)
         print_format(philo, " is sleeping❕ 😪💤", &philo->waiter->mt_print);
     if (state == THINKING)
         print_format(philo, " is thinking❕ 🤔💭", &philo->waiter->mt_print);
-    if (state == DIED)
-        print_format(philo, " has died❕ 🪦 ⚰💀", &philo->waiter->mt_print);
     if (state == FULL)
         print_format(philo, " is full❕ 🥣🫄", &philo->waiter->mt_print);
     if (state == FORK_LEFT)

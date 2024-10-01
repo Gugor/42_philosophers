@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/30 15:53:53 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:33:21 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 void init_waiter(t_waiter *wtr, t_dinner *dinner)
 {
 
-	wtr->deads = 0;
+	wtr->whoisdead = -1;
 	wtr->state = PREPARING;
 	wtr->dinner_start = dinner->start_tm;
 	pthread_mutex_init(&wtr->mt_state, NULL);
@@ -65,7 +65,7 @@ void init_waiter(t_waiter *wtr, t_dinner *dinner)
  * - 3 if `time_to_die` is not a valid digit
  * - 4 if `time_to_eat` is not a valid digit
  * - 5 if `time_to_sleep` is not a valid digit
- * - 6 if `max_meals_to_eat` is not a valid digit
+ * - 6 if `min_meals_to_eat` is not a valid digit
 */
 int	init_settings(int ac, char **av, t_settings **sts)
 {
@@ -80,10 +80,10 @@ int	init_settings(int ac, char **av, t_settings **sts)
         return (err);
     if ((err = set_sttng_val(&(*sts)->time_to_sleep, av[4], 5)) > 1)
         return (err);
-    if (ac == 6 && (err = set_sttng_val(&(*sts)->max_meals_to_eat, av[5], 6)) > 1)
+    if (ac == 6 && (err = set_sttng_val(&(*sts)->min_meals_to_eat, av[5], 6)) > 1)
         return (err);
     else
-        (*sts)->max_meals_to_eat = -1;
+        (*sts)->min_meals_to_eat = -1;
     if ((err = check_settings(*sts)) > 0)
         return (err);
 	return (0);
@@ -104,6 +104,8 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 	}
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
+	if (settings->min_meals_to_eat <= 0)
+		return (1);
 	dinner->settings = settings;
 	if (sttngs_err)
 	{

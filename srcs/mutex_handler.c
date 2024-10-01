@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:48:15 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/30 19:08:35 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:19:07 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,34 +22,16 @@ int check_dinner_state(t_philo *philo)
 	state = philo->waiter->state;
 	pthread_mutex_unlock(&philo->waiter->mt_state);
 	pthread_mutex_lock(&philo->waiter->mt_deads);
-	deads = philo->waiter->deads;
+	deads = philo->waiter->whoisdead;
 	pthread_mutex_unlock(&philo->waiter->mt_deads);
 	if (state == ENDED || philo->state == FULL)
 		return (0);
 	return (1);
 }
 
-/**
- * @brief It uses a mutex to set the philosopher state.
- * @returns `{void}`
-*/
-void set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
-{
-	pthread_mutex_lock(&waiter->mt_state);
-	waiter->state = newstate;
-	pthread_mutex_unlock(&waiter->mt_state);
-}
 
-/**
- * @brief It uses a mutex to set the philosopher state.
- * @returns `{void}`
-*/
-void set_dead_state(t_waiter *waiter, int indx)
-{
-	pthread_mutex_lock(&waiter->mt_deads);
-	waiter->deads = indx;
-	pthread_mutex_unlock(&waiter->mt_deads);
-}
+
+
 
 /**
  * @brief It sets a mutex for the fork of the given hand.
