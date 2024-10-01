@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 17:33:21 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:06:32 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void init_waiter(t_waiter *wtr, t_dinner *dinner)
 	pthread_mutex_init(&wtr->mt_deads, NULL);
 	pthread_mutex_init(&wtr->mt_print, NULL);
 	pthread_mutex_init(&wtr->mt_start, NULL);
+	pthread_mutex_init(&wtr->mt_phfull, NULL);
 }
 
 /**
@@ -82,8 +83,6 @@ int	init_settings(int ac, char **av, t_settings **sts)
         return (err);
     if (ac == 6 && (err = set_sttng_val(&(*sts)->min_meals_to_eat, av[5], 6)) > 1)
         return (err);
-    else
-        (*sts)->min_meals_to_eat = -1;
     if ((err = check_settings(*sts)) > 0)
         return (err);
 	return (0);
@@ -104,7 +103,7 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 	}
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
-	if (settings->min_meals_to_eat <= 0)
+	if (settings->min_meals_to_eat == 0)
 		return (1);
 	dinner->settings = settings;
 	if (sttngs_err)

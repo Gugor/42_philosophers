@@ -88,6 +88,8 @@ typedef struct s_waiter
 	pthread_mutex_t	mt_deads;
 	int64_t			dinner_start;
 	pthread_mutex_t	mt_start;
+	int				philos_full;
+	pthread_mutex_t	mt_phfull;
 }	t_waiter;
 
 typedef struct s_philo
@@ -199,9 +201,11 @@ int			philo_uwait(int64_t mcs, t_philo *philo);
 
 /*____________________________________________________________________________*/
 /*       	...Waiter ...           		                                  */
+void		set_waiter_pfull(t_waiter *waiter);
 void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
-int			get_waiter_state(t_waiter *wtr);
 void		set_dead_state(t_waiter *waiter, int indx);
+int			get_waiter_pfull(t_waiter *waiter);
+int			get_waiter_state(t_waiter *wtr);
 int			get_whoisdead(t_waiter *waiter);
 
 #endif

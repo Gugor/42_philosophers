@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 17:25:26 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:53:28 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 	int			indx;
 
 	stts = dinner->settings;
-	if(stts->num_of_philos == 1 || stts->min_meals_to_eat <= 0)
+	if(stts->num_of_philos == 1)
 	{
 		printf("Philo 0  has died❕ 🪦 ⚰💀\n");
 		return (-1);
@@ -75,6 +75,7 @@ t_philo *init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	philo->time_to_die = stts->time_to_die;
 	philo->time_to_eat = stts->time_to_eat;
 	philo->time_to_sleep = stts->time_to_sleep;
+	philo->min_meals_to_eat = stts->min_meals_to_eat;
 	philo->times_eaten = 0; 
 	philo->times_slept = 0; 
 	philo->times_thought = 0; 

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 17:23:03 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:12:39 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 */
 int has_eaten_enough(t_philo *this)
 {
-	if (this->min_meals_to_eat <= 0)
-		return (0);
+	printf("Philo %i checking meals %i/%i\n", this->indx + 1, this->times_eaten, this->min_meals_to_eat);
 	if (this->times_eaten >= this->min_meals_to_eat)
 	{
-		set_waiter_state(this->waiter, ENDED);
+		printf("FULL Philo %i checking meals %i/%i\n", this->indx + 1, this->times_eaten, this->min_meals_to_eat);
+		this->state = STOPED;
+		set_waiter_pfull(this->waiter);
 		print(this, FULL);
 		return (1);
 	}
@@ -65,10 +66,12 @@ void *dinning(void *data)
 	this = (t_philo *)data;
 	while (42)
 	{
-		if (get_waiter_state(this->waiter) == PREPARING)
+		if (get_waiter_state(this->waiter) == PREPARING ||
+		(this->state == STOPED && get_waiter_state(this->waiter) == DINNING))
 			continue;
 		if (this->state == STOPED)
 		{
+			printf("Settings meals %i\n", this->min_meals_to_eat);
 			this->time_last_meal = get_current_time('m');
 			this->state = EATING;
 		}

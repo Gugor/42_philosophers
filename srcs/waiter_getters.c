@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiter.c                                           :+:      :+:    :+:   */
+/*   waiter_getters.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 12:34:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 15:59:21 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:06:19 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-/**
- * @brief It uses a mutex to set the philosopher state.
- * @returns `{void}`
+
+/*
+* @brief It add one more philo full.
 */
-void set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
+int get_waiter_pfull(t_waiter *waiter)
 {
-	pthread_mutex_lock(&waiter->mt_state);
-	waiter->state = newstate;
-	pthread_mutex_unlock(&waiter->mt_state);
+	int full;
+
+	pthread_mutex_lock(&waiter->mt_phfull);
+	full = waiter->philos_full;
+	pthread_mutex_unlock(&waiter->mt_phfull);
+	return (full);
 }
 
 /**
@@ -30,23 +33,11 @@ void set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
 */
 int get_waiter_state(t_waiter *wtr)
 {
-    t_dinner_state state;
-    pthread_mutex_lock(&wtr->mt_state);
-    state = wtr->state; 
-    pthread_mutex_unlock(&wtr->mt_state);
-    return (state);
-}
-
-/**
- * @brief It uses a mutex to set the philosopher state.
- * @returns `{void}`
-*/
-void set_dead_state(t_waiter *waiter, int indx)
-{
-	pthread_mutex_lock(&waiter->mt_deads);
-	if (waiter->whoisdead < 0)
-		waiter->whoisdead = indx;
-	pthread_mutex_unlock(&waiter->mt_deads);
+	t_dinner_state state;
+	pthread_mutex_lock(&wtr->mt_state);
+	state = wtr->state; 
+	pthread_mutex_unlock(&wtr->mt_state);
+	return (state);
 }
 
 /**
@@ -54,10 +45,10 @@ void set_dead_state(t_waiter *waiter, int indx)
 */
 int get_whoisdead(t_waiter *waiter)
 {
-    int whoisdead;
+	int whoisdead;
 
 	pthread_mutex_lock(&waiter->mt_deads);
 		whoisdead = waiter->whoisdead;
 	pthread_mutex_unlock(&waiter->mt_deads);
-    return (whoisdead);
+	return (whoisdead);
 }

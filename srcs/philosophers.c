@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 17:32:34 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:08:07 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int main(int ac, char **av)
 	if (get_whoisdead(&waiter) > -1)
 		print_format_death(&dinner->philos[get_whoisdead(&waiter)],
 		" has died❕ 🪦 ⚰💀" , &waiter.mt_print);
+	if (get_waiter_pfull(&waiter) == settings->num_of_philos)
+		waiter.state = ENDED;
 	update_elapsed_time_to(&dinner->dinner_duration, dinner->start_tm, 'm');
 	printf("%sDinner duration:%s %ld %sms%s\n", MAGENTA, RESET, dinner->dinner_duration / 1000L, BLD_YELLOW, RESET);
 	clear_dinner(&dinner, &waiter);

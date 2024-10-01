@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 17:19:43 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:45:30 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int eating(t_philo *philo)
     put_fork(philo, philo->leader_hand);
     put_fork(philo, !philo->leader_hand);
     philo->times_eaten++;
-    //printf("Philo %i has eaten %i times\n", philo->indx + 1, philo->times_eaten);
     if (has_eaten_enough(philo))
     {
       print(philo, FULL);
