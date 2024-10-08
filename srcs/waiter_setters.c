@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 12:34:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 18:02:52 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:21:36 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*
 * @brief It add one more philo full.
 */
-void set_waiter_pfull(t_waiter *waiter)
+void	set_waiter_pfull(t_waiter *waiter)
 {
 	pthread_mutex_lock(&waiter->mt_phfull);
 	waiter->philos_full++;
@@ -27,7 +27,7 @@ void set_waiter_pfull(t_waiter *waiter)
  * @brief It uses a mutex to set the philosopher state.
  * @returns `{void}`
 */
-void set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
+void	set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
 {
 	pthread_mutex_lock(&waiter->mt_state);
 	waiter->state = newstate;
@@ -38,7 +38,7 @@ void set_waiter_state(t_waiter *waiter, t_dinner_state newstate)
  * @brief It uses a mutex to set the philosopher state.
  * @returns `{void}`
 */
-void set_dead_state(t_waiter *waiter, int indx)
+void	set_dead_state(t_waiter *waiter, int indx)
 {
 	pthread_mutex_lock(&waiter->mt_deads);
 	if (waiter->whoisdead < 0)

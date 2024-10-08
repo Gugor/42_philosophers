@@ -6,24 +6,23 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 20:01:50 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/09/28 15:13:49 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:38:37 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
 
 /**
  * @brief It updates the elapsed time for a given value.
 */
 int64_t   update_elapsed_time_to(int64_t *new, int64_t start, char precision)
 {
-    struct timeval		tv;
-    struct timezone		*tz;
+	struct timeval		tv;
+	struct timezone		*tz;
 
-    if(gettimeofday(&tv, &tz) < 0)
-        return (errno);
-    *new =  get_elapsed_time(start, precision); 
+	if (gettimeofday(&tv, &tz) < 0)
+		return (errno);
+	*new = get_elapsed_time(start, precision);
 	return (*new);
 }
 /**
@@ -31,12 +30,12 @@ int64_t   update_elapsed_time_to(int64_t *new, int64_t start, char precision)
  * or microseconds.
  * @return `{time_t (long)}`
 */
-int64_t  get_current_time(char precision)
+int64_t	get_current_time(char precision)
 {
 	struct timeval		tv;
 	struct timezone		*tz;
 
-	if(gettimeofday(&tv, &tz) < 0)
+	if (gettimeofday(&tv, &tz) < 0)
 		return (errno);
 	if (precision == 's' || precision == 'S')
 		return ((tv.tv_sec + (tv.tv_usec / 1000000L)));
@@ -53,8 +52,8 @@ int64_t  get_current_time(char precision)
 */
 int64_t	get_elapsed_time(int64_t start, char precision)
 {
-    int64_t end;
-	
+	int64_t	end;
+
 	end = get_current_time(precision);
 	return (end - start);
 }
@@ -65,11 +64,11 @@ int64_t	get_elapsed_time(int64_t start, char precision)
 */
 int64_t set_dinner_time(t_dinner *dinner)
 {
-    struct timeval tv;
-    struct timezone *tz;
+	struct timeval	tv;
+	struct timezone	*tz;
 
-    if(gettimeofday(&tv, &tz) < 0)
-        return (errno);
-    dinner->start_tm = get_current_time('m');
-    return (0);
+	if (gettimeofday(&tv, &tz) < 0)
+		return (errno);
+	dinner->start_tm = get_current_time('m');
+	return (0);
 }

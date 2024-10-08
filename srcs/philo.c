@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 17:53:28 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/08 21:03:31 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 	int			indx;
 
 	stts = dinner->settings;
-	if(stts->num_of_philos == 1)
+	if (stts->num_of_philos == 1)
 	{
-		printf("Philo 0  has died❕ 🪦 ⚰💀\n");
+		printf("%sPhilo 0%s  has died❕ 🪦 ⚰💀\n", BLD_MAGENTA, RESET);
 		return (-1);
 	}
 	philos = (t_philo *)malloc(sizeof(t_philo) * stts->num_of_philos);
@@ -40,7 +40,7 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
 	dinner->philos = philos;
 	set_waiter_state(waiter, DINNING);
 	indx = -1;
-	while(++indx < stts->num_of_philos)
+	while (++indx < stts->num_of_philos)
 		pthread_join(philos[indx].pthread, NULL);
 	return (0);
 }
@@ -50,20 +50,20 @@ int register_philos(t_dinner *dinner, t_waiter *waiter)
  * if its left or right handed.
  * @returns `{void}`
 */
-static void select_fork_for_hands(pthread_mutex_t *forks, t_philo *owner, int num)
+static void	select_fork_for_hands(pthread_mutex_t *forks,
+	t_philo *owner, int num)
 {
 	owner->left_hand = &forks[owner->indx];
-	//printf("Philo %i, left hand fork (%p)\n", owner->indx, &owner->left_hand);
 	owner->right_hand = &forks[(owner->indx + 1) % num];
-	//printf("Philo %i, right hand fork (%p)\n", owner->indx, &owner->right_hand);
 }
 
 /**
  * @brief
 */
-t_philo *init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
+t_philo	*init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 {
-	t_settings  *stts;
+	t_settings	*stts;
+
 	if (!philo)
 		return (NULL);
 	stts = dinner->settings;

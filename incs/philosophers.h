@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/08 15:31:16 by hmontoya          #+#    #+#             */
+/*   Updated: 2024/10/08 18:19:06 by hmontoya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
@@ -34,30 +45,30 @@
 /*============================================================================*/
 /*===========================|  Structures  |================================ */
 /*============================================================================*/
-typedef enum e_dinner_state 
+typedef enum e_dinner_state
 {
 	PREPARING,
 	DINNING,
 	ENDED
-}   t_dinner_state;
+}	t_dinner_state;
 
-typedef enum e_rules 
+typedef enum e_rules
 {
 	NUMBER_OF_PHILOS,
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	TIME_TO_SLEEP,
 	MAX_TIMES_TO_EAT
-}   t_rules;
+}	t_rules;
 
-typedef struct s_settings 
+typedef struct s_settings
 {
-	int num_of_philos;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
-	int min_meals_to_eat;
-}   t_settings;
+	int	num_of_philos;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	min_meals_to_eat;
+}	t_settings;
 
 typedef enum philo_state
 {
@@ -112,7 +123,7 @@ typedef struct s_philo
 	int     		min_meals_to_eat;
 	int     		times_slept;
 	int     		times_thought;
-}   t_philo;
+}	t_philo;
 
 typedef struct s_dinner
 {
@@ -124,8 +135,7 @@ typedef struct s_dinner
 	int				times_splept;
 	int				times_thought;
 	int64_t			dinner_duration;
-}   t_dinner;
-
+}	t_dinner;
 
 /*============================================================================*/
 /*===========================|   Protoypes  |================================ */
@@ -136,49 +146,41 @@ int			init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings);
 int			init_settings(int ac, char **av, t_settings **sts);
 int			create_forks(pthread_mutex_t **forks, int amount);
 void		init_waiter(t_waiter *wtr, t_dinner *dinner);
-
 /*____________________________________________________________________________*/
 /*       	...Settings...  		                                          */
 int			set_sttng_val(int *set, char *val, int err);
 int			check_settings(t_settings *sts);
 int			check_sttng(int set, int condition, int err);
-
 /*____________________________________________________________________________*/
 /*       	...Utils ...    		                                          */
 int			ft_isspace(char c);
 int			ft_atoi(const char *str);
 int			is_valid_digit(char *str);
-
 /*____________________________________________________________________________*/
 /*       	...Error Handler ...    		                                  */
 void		printf_usage_error();
 void		print_settings_err(int err);
-
 /*____________________________________________________________________________*/
 /*       	...Memory Handler ...    		                                  */
 void		destroy_forks(pthread_mutex_t **data, int amount);
 void		destroy_philos(t_philo **philos, int amount);
-void		clear_dinner(t_dinner **dinner, t_waiter *waiter);
-
+void		clear_dinner(t_dinner *dinner, t_waiter *waiter);
 /*____________________________________________________________________________*/
 /*       	...Philo ...            		                                  */
 int			register_philos(t_dinner *dinner, t_waiter *waiter);
 t_philo		*init_philo(int indx, t_philo *philo, t_dinner *dinner,
 			t_waiter *wtr);
-
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
 int64_t		set_dinner_time(t_dinner *dinner);
 int64_t		get_elapsed_time(int64_t start, char precision);
 int64_t		get_current_time(char precision);
 int64_t		update_elapsed_time_to(int64_t*new, int64_t start, char precision);
-
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
 int			has_eaten_enough(t_philo *this);
 int			is_dead(t_philo *this);
 void		*dinning(void *data);
-
 /*____________________________________________________________________________*/
 /*       	...Philos State ...      		                                  */
 int			thinking(t_philo *philo);
@@ -194,11 +196,9 @@ void		put_fork(t_philo *this, t_ph_hand hand);
 void		print_format_death(t_philo *philo, char *msg,
 			pthread_mutex_t *mt_print);
 void		print(t_philo *philo, t_philo_state state);
-
 /*____________________________________________________________________________*/
 /*       	...Philo Wait ...       		                                  */
 int			philo_uwait(int64_t mcs, t_philo *philo);
-
 /*____________________________________________________________________________*/
 /*       	...Waiter ...           		                                  */
 void		set_waiter_pfull(t_waiter *waiter);
@@ -207,5 +207,4 @@ void		set_dead_state(t_waiter *waiter, int indx);
 int			get_waiter_pfull(t_waiter *waiter);
 int			get_waiter_state(t_waiter *wtr);
 int			get_whoisdead(t_waiter *waiter);
-
 #endif

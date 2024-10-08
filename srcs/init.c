@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/01 18:06:32 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/08 19:52:24 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 			return (1);
 		printf("Fork %i (%p)\n", indx, &forks[indx]);
 	}
+	printf("\n");
 	*pforks = forks;
 	return (0);
 }
@@ -70,21 +71,26 @@ void init_waiter(t_waiter *wtr, t_dinner *dinner)
 */
 int	init_settings(int ac, char **av, t_settings **sts)
 {
-    int err;
+	int	err;
 
-    err = 0;
-    if ((err = set_sttng_val(&(*sts)->num_of_philos, av[1], 2)) > 1)
-        return (err);
-    if ((err = set_sttng_val(&(*sts)->time_to_die, av[2], 3)) > 1)
-        return (err);
-    if ((err = set_sttng_val(&(*sts)->time_to_eat, av[3], 4)) > 1)
-        return (err);
-    if ((err = set_sttng_val(&(*sts)->time_to_sleep, av[4], 5)) > 1)
-        return (err);
-    if (ac == 6 && (err = set_sttng_val(&(*sts)->min_meals_to_eat, av[5], 6)) > 1)
-        return (err);
-    if ((err = check_settings(*sts)) > 0)
-        return (err);
+	err = 0;
+	if ((err = set_sttng_val(&(*sts)->num_of_philos, av[1], 2)) > 1)
+		return (err);
+	if ((err = set_sttng_val(&(*sts)->time_to_die, av[2], 3)) > 1)
+		return (err);
+	if ((err = set_sttng_val(&(*sts)->time_to_eat, av[3], 4)) > 1)
+		return (err);
+	if ((err = set_sttng_val(&(*sts)->time_to_sleep, av[4], 5)) > 1)
+		return (err);
+	if (ac == 6)
+	{
+		if ((err = set_sttng_val(&(*sts)->min_meals_to_eat, av[5], 6)) > 1)
+			return (err);
+	}
+	else
+		(*sts)->min_meals_to_eat = -1;
+	if ((err = check_settings(*sts)) > 0)
+		return (err);
 	return (0);
 }
 
@@ -104,14 +110,17 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
 	if (settings->min_meals_to_eat == 0)
+	{
+		print_settings_err(sttngs_err);
 		return (1);
+	}
 	dinner->settings = settings;
 	if (sttngs_err)
 	{
 		print_settings_err(sttngs_err);
 		return (sttngs_err);
 	}
-	if(create_forks(&dinner->forks, settings->num_of_philos))
+	if (create_forks(&dinner->forks, settings->num_of_philos))
 		destroy_forks(&dinner->forks, settings->num_of_philos);
 	return (0);
 }
