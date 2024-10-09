@@ -20,9 +20,6 @@ int	check_if_died(t_philo **philos, t_waiter *waiter, int num)
 	indx = -1;
 	while (++indx < num && philos[indx])
 	{
-		pthread_mutex_lock(&waiter->mt_print);
-		printf("Philo %i is time from last meal %ld\n", philos[indx]->indx + 1, get_elapsed_time(philos[indx]->time_last_meal, 'c'));
-		pthread_mutex_unlock(&waiter->mt_print);
 		if (is_dead(philos[indx]))
 		{
 			set_waiter_state(waiter, ENDED);
@@ -30,29 +27,6 @@ int	check_if_died(t_philo **philos, t_waiter *waiter, int num)
 		}
 	}
 	return (0);
-}
-
-void	*waitering_r(void *data)
-{
-	t_dinner	*dinner = (t_dinner *)data;
-	t_waiter	*waiter = dinner->philos[0].waiter;
-
-	pthread_mutex_lock(&waiter->mt_print);
-	printf("Waiterng start\n");
-	pthread_mutex_unlock(&waiter->mt_print);
-	set_waiter_state(waiter, DINNING);
-	while (get_waiter_state(waiter) != ENDED)
-	{
-		if (get_waiter_pfull(waiter) >= dinner->settings->num_of_philos
-			|| check_if_died(&dinner->philos, waiter,
-			dinner->settings->num_of_philos))
-		{
-			set_waiter_state(waiter, ENDED);
-			return (NULL) ;
-		}
-		usleep(1);
-	}
-	return (NULL) ;
 }
 
 void	waitering(t_dinner *dinner, t_waiter *waiter)
@@ -86,8 +60,6 @@ int	main(int ac, char **av)
 		exit (EXIT_FAILURE);
 	init_waiter(&waiter, &dinner);
 	register_philos(&dinner, &waiter);
-	pthread_create(&waiterer, NULL, &waitering_r, &dinner);
-	pthread_detach(waiterer);
 	//waitering(&dinner, &waiter);
 	if (get_whoisdead(&waiter) > -1)
 		print_format_death(&dinner.philos[get_whoisdead(&waiter)],

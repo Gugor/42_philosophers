@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 20:27:05 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:26:02 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int sleeping(t_philo *philo)
 		return (1);
 	philo->state = SLEEPING;
 	philo_uwait(philo->time_to_sleep * 1000L, philo);
-	/*if (is_dead(philo))
+	if (is_dead(philo))
 	{
 		print(philo, DIED);
 		return (1);
-	}*/
+	}
 	print(philo, SLEEPING);
 	philo->times_slept++;
 	return (0);
@@ -57,14 +57,14 @@ int eating(t_philo *philo)
 	if (check_dinner_state(philo) == 0)
 		return (1);
 	get_fork(philo, philo->leader_hand);
-	/*if (check_dinner_state(philo) == 0)
+	if (check_dinner_state(philo) == 0)
 	{
 		if (!philo->leader_hand)
 			pthread_mutex_unlock(philo->left_hand);
 		if (philo->leader_hand)
 			pthread_mutex_unlock(philo->right_hand);
 		return (1);
-	}*/
+	}
 	get_fork(philo, !philo->leader_hand);
 	print(philo, EATING);
 	philo->time_last_meal = get_current_time('m');
