@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 12:34:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 17:21:15 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 22:18:06 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,4 @@ int	get_waiter_state(t_waiter *wtr)
 	state = wtr->state;
 	pthread_mutex_unlock(&wtr->mt_state);
 	return (state);
-}
-
-/**
- * @brief It gets who is dead
-*/
-int	get_whoisdead(t_waiter *waiter)
-{
-	int	whoisdead;
-
-	pthread_mutex_lock(&waiter->mt_deads);
-	whoisdead = waiter->whoisdead;
-	pthread_mutex_unlock(&waiter->mt_deads);
-	return (whoisdead);
 }

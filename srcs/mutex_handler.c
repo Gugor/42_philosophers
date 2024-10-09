@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:48:15 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 19:25:24 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 22:07:11 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_dinner_state(t_philo *philo)
 {
 	t_dinner_state	state;
 
-	is_dead(philo);
+	//is_dead(philo);
 	pthread_mutex_lock(&philo->waiter->mt_state);
 	state = philo->waiter->state;
 	pthread_mutex_unlock(&philo->waiter->mt_state);

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 20:00:33 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 23:24:21 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,11 @@ int	is_dead(t_philo *this)
 {
 	int64_t	interval;
 
-	interval = get_elapsed_time(this->time_last_meal, 'm');// + this->time_to_die;
-	if (interval > this->time_to_die * 1000L)
+	interval = get_elapsed_time(get_philo_lstml(this), 'm');
+	printf("Cheking philo %i is dead or not %ld\n", this->indx + 1, interval);
+	if (interval > get_philo_ttd(this) * 1000L)
 	{
-		set_dead_state(this->waiter, this->indx);
-		this->time_of_death = get_current_time('m');
-		set_waiter_state(this->waiter, ENDED);
-		update_elapsed_time_to(&this->time_alive, this->birth, 'm');
+		printf("Philo %i has died\n", this->indx + 1);
 		return (1);
 	}
 	return (0);

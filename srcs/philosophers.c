@@ -13,16 +13,21 @@
 #include "philosophers.h"
 #include <string.h>
 
-int	check_if_died(t_philo **philos, t_waiter *waiter, int num)
+static int	check_if_died(t_dinner *dinner, int num)
 {
-	int	indx;
+	int		indx;
+	t_philo	*philos;
 
 	indx = -1;
-	while (++indx < num && philos[indx])
+	philos = dinner->philos;
+	while (++indx < num)
 	{
-		if (is_dead(philos[indx]))
+		if (is_dead(&philos[indx]))
 		{
-			set_waiter_state(waiter, ENDED);
+			pthread_mutex_lock(&dinner->mt_waiter);
+			set_waiter_state(philos[indx].waiter, ENDED);
+			pthread_mutex_unlock(&dinner->mt_waiter);
+			print(&philos[indx], DIED);
 			return (1);
 		}
 	}
@@ -31,15 +36,26 @@ int	check_if_died(t_philo **philos, t_waiter *waiter, int num)
 
 void	waitering(t_dinner *dinner, t_waiter *waiter)
 {
-	while (get_waiter_state(waiter) != ENDED)
+	t_philo	*philos;
+	int		indx;
+
+	pthread_mutex_lock(&dinner->mt_waiter);
+	set_waiter_state(waiter, DINNING);
+	pthread_mutex_unlock(&dinner->mt_waiter);
+	philos = dinner->philos;
+	indx = -1;
+	while (1)
 	{
-		if (get_waiter_pfull(waiter) >= dinner->settings->num_of_philos
-			|| check_if_died(&dinner->philos, waiter,
-			dinner->settings->num_of_philos))
+		if (check_if_died(dinner,
+				dinner->settings->num_of_philos))
+			return ;
+		pthread_mutex_lock(&dinner->mt_waiter);
+		if (get_waiter_pfull(waiter) >= dinner->settings->num_of_philos)
 		{
-			set_waiter_state(waiter, ENDED);
+			pthread_mutex_unlock(&dinner->mt_waiter);
 			return ;
 		}
+		pthread_mutex_unlock(&dinner->mt_waiter);
 		usleep(1);
 	}
 }
@@ -60,13 +76,13 @@ int	main(int ac, char **av)
 		exit (EXIT_FAILURE);
 	init_waiter(&waiter, &dinner);
 	register_philos(&dinner, &waiter);
-	//waitering(&dinner, &waiter);
-	if (get_whoisdead(&waiter) > -1)
+	
+	/*if (get_whoisdead(&waiter) > -1)
 		print_format_death(&dinner.philos[get_whoisdead(&waiter)],
-			" has died❕ 🪦 ⚰💀" , &waiter.mt_print);
-	if (get_waiter_pfull(&waiter) == settings.num_of_philos)
-		set_waiter_state(&waiter, ENDED);
+			" has died❕ 🪦 ⚰💀" , &waiter.mt_print);*/
+	/*if (get_waiter_pfull(&waiter) == settings.num_of_philos)
+		set_waiter_state(&waiter, ENDED);*/
 	update_elapsed_time_to(&dinner.dinner_duration, dinner.start_tm, 'm');
-	clear_dinner(&dinner, &waiter);
+	//clear_dinner(&dinner, &waiter);
 	return (EXIT_SUCCESS);
 }

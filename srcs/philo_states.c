@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 19:26:02 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 23:03:25 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int thinking(t_philo *philo)
 /**
  * @brief Make a philo eat
 */
-int sleeping(t_philo *philo)
+int	sleeping(t_philo *philo)
 {
 	if (check_dinner_state(philo) == 0)
 		return (1);
@@ -52,22 +52,22 @@ int sleeping(t_philo *philo)
 /**
  * @brief Make a philo eat
 */
-int eating(t_philo *philo)
+int	eating(t_philo *philo)
 {
 	if (check_dinner_state(philo) == 0)
 		return (1);
 	get_fork(philo, philo->leader_hand);
-	if (check_dinner_state(philo) == 0)
+	/*if (check_dinner_state(philo) == 0)
 	{
 		if (!philo->leader_hand)
 			pthread_mutex_unlock(philo->left_hand);
 		if (philo->leader_hand)
 			pthread_mutex_unlock(philo->right_hand);
 		return (1);
-	}
+	}*/
 	get_fork(philo, !philo->leader_hand);
 	print(philo, EATING);
-	philo->time_last_meal = get_current_time('m');
+	set_philo_lstml(philo);
 	philo->state = EATING;
 	philo_uwait(philo->time_to_eat * 1000L, philo);
 	put_fork(philo, philo->leader_hand);

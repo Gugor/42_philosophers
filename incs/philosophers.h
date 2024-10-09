@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:31:16 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 18:19:06 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 23:03:05 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ typedef struct s_waiter
 	t_dinner_state	state;
 	pthread_mutex_t	mt_state;
 	pthread_mutex_t mt_print;
-	int				whoisdead;
 	pthread_mutex_t	mt_deads;
 	int64_t			dinner_start;
 	pthread_mutex_t	mt_start;
@@ -105,30 +104,33 @@ typedef struct s_waiter
 
 typedef struct s_philo
 {
-	int     		indx;
-	pthread_t 		pthread;
-	pthread_mutex_t *left_hand;
-	pthread_mutex_t *right_hand;
+	int				indx;
+	pthread_t		pthread;
+	pthread_mutex_t	*left_hand;
+	pthread_mutex_t	*right_hand;
+	pthread_mutex_t	mt_lstml;
+	pthread_mutex_t	mt_ttd;
 	t_philo_state	state;
 	t_ph_hand		leader_hand;	
-	int64_t 		time_to_die;
-	int64_t 		time_to_eat;
-	int64_t 		time_last_meal;
-	int64_t 		time_to_sleep;
+	int64_t			time_to_die;
+	int64_t			time_to_eat;
+	int64_t			time_last_meal;
+	int64_t			time_to_sleep;
 	int64_t			time_alive;
 	int64_t			time_of_death;
 	int64_t			birth;
 	t_waiter		*waiter;
-	int     		times_eaten;
-	int     		min_meals_to_eat;
-	int     		times_slept;
-	int     		times_thought;
+	int				times_eaten;
+	int				min_meals_to_eat;
+	int				times_slept;
+	int				times_thought;
 }	t_philo;
 
 typedef struct s_dinner
 {
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	mt_waiter;
 	t_settings		*settings;
 	int64_t			start_tm;
 	int				meals_served;
@@ -140,9 +142,11 @@ typedef struct s_dinner
 /*============================================================================*/
 /*===========================|   Protoypes  |================================ */
 /*============================================================================*/
+void		waitering(t_dinner *dinner, t_waiter *waiter);
 /*____________________________________________________________________________*/
 /*       	...Init...  		                                          */
-int			init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings);
+int			init_dinner(int ac, char **av, t_dinner *dinner,
+				t_settings *settings);
 int			init_settings(int ac, char **av, t_settings **sts);
 int			create_forks(pthread_mutex_t **forks, int amount);
 void		init_waiter(t_waiter *wtr, t_dinner *dinner);
@@ -158,7 +162,7 @@ int			ft_atoi(const char *str);
 int			is_valid_digit(char *str);
 /*____________________________________________________________________________*/
 /*       	...Error Handler ...    		                                  */
-void		printf_usage_error();
+void		printf_usage_error(void);
 void		print_settings_err(int err);
 /*____________________________________________________________________________*/
 /*       	...Memory Handler ...    		                                  */
@@ -169,7 +173,7 @@ void		clear_dinner(t_dinner *dinner, t_waiter *waiter);
 /*       	...Philo ...            		                                  */
 int			register_philos(t_dinner *dinner, t_waiter *waiter);
 t_philo		*init_philo(int indx, t_philo *philo, t_dinner *dinner,
-			t_waiter *wtr);
+				t_waiter *wtr);
 /*____________________________________________________________________________*/
 /*       	...Dinner Time ...    		                                  */
 int64_t		set_dinner_time(t_dinner *dinner);
@@ -194,17 +198,26 @@ void		put_fork(t_philo *this, t_ph_hand hand);
 /*____________________________________________________________________________*/
 /*       	...Message ...          		                                  */
 void		print_format_death(t_philo *philo, char *msg,
-			pthread_mutex_t *mt_print);
+				pthread_mutex_t *mt_print);
 void		print(t_philo *philo, t_philo_state state);
 /*____________________________________________________________________________*/
 /*       	...Philo Wait ...       		                                  */
 int			philo_uwait(int64_t mcs, t_philo *philo);
 /*____________________________________________________________________________*/
-/*       	...Waiter ...           		                                  */
+/*       	...Waiter Getters...       		                                  */
 void		set_waiter_pfull(t_waiter *waiter);
 void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
 void		set_dead_state(t_waiter *waiter, int indx);
+/*____________________________________________________________________________*/
+/*       	...Waiter Setters...       		                                  */
 int			get_waiter_pfull(t_waiter *waiter);
 int			get_waiter_state(t_waiter *wtr);
 int			get_whoisdead(t_waiter *waiter);
+/*____________________________________________________________________________*/
+/*       	...Philo Getters...       		                                  */
+int64_t		get_philo_lstml(t_philo *this);
+int64_t		get_philo_ttd(t_philo *this);
+/*____________________________________________________________________________*/
+/*       	...Philo Setters...       		                                  */
+void		set_philo_lstml(t_philo *this);
 #endif

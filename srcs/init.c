@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 19:52:24 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/09 22:45:20 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 void init_waiter(t_waiter *wtr, t_dinner *dinner)
 {
 
-	wtr->whoisdead = -1;
 	wtr->state = PREPARING;
 	wtr->dinner_start = dinner->start_tm;
 	pthread_mutex_init(&wtr->mt_state, NULL);
@@ -107,6 +106,7 @@ int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 		print_settings_err(1);
 		return (1);
 	}
+	pthread_mutex_init(&dinner->mt_waiter, NULL);
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
 	if (settings->min_meals_to_eat == 0)
