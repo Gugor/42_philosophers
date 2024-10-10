@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 22:45:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:22:55 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 */
 int	create_forks(pthread_mutex_t **pforks, int amount)
 {
-	int indx;
-	pthread_mutex_t *forks;
+	int				indx;
+	pthread_mutex_t	*forks;
 
 	indx = -1;
 	forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * amount);
@@ -28,7 +28,7 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 		return (-1);
 	while (++indx < amount)
 	{
-		if(pthread_mutex_init(&forks[indx], NULL))	
+		if (pthread_mutex_init(&forks[indx], NULL))
 			return (1);
 		printf("Fork %i (%p)\n", indx, &forks[indx]);
 	}
@@ -40,14 +40,15 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 /**
  * @brief Initialize waiter
 */
-void init_waiter(t_waiter *wtr, t_dinner *dinner)
+void	init_waiter(t_waiter *wtr, t_dinner *dinner)
 {
-
 	wtr->state = PREPARING;
 	wtr->dinner_start = dinner->start_tm;
+	wtr->whoisdead = -1;
+	wtr->philos_full = 0;
 	pthread_mutex_init(&wtr->mt_state, NULL);
-	pthread_mutex_init(&wtr->mt_deads, NULL);
 	pthread_mutex_init(&wtr->mt_print, NULL);
+	pthread_mutex_init(&wtr->mt_whoisdead, NULL);
 	pthread_mutex_init(&wtr->mt_start, NULL);
 	pthread_mutex_init(&wtr->mt_phfull, NULL);
 }
@@ -73,22 +74,23 @@ int	init_settings(int ac, char **av, t_settings **sts)
 	int	err;
 
 	err = 0;
-	if ((err = set_sttng_val(&(*sts)->num_of_philos, av[1], 2)) > 1)
-		return (err);
-	if ((err = set_sttng_val(&(*sts)->time_to_die, av[2], 3)) > 1)
-		return (err);
-	if ((err = set_sttng_val(&(*sts)->time_to_eat, av[3], 4)) > 1)
-		return (err);
-	if ((err = set_sttng_val(&(*sts)->time_to_sleep, av[4], 5)) > 1)
-		return (err);
+	if (set_sttng_val(&(*sts)->num_of_philos, av[1], 2) > 1)
+		return (2);
+	if (set_sttng_val(&(*sts)->time_to_die, av[2], 3) > 1)
+		return (3);
+	if (set_sttng_val(&(*sts)->time_to_eat, av[3], 4) > 1)
+		return (4);
+	if (set_sttng_val(&(*sts)->time_to_sleep, av[4], 5) > 1)
+		return (4);
 	if (ac == 6)
 	{
-		if ((err = set_sttng_val(&(*sts)->min_meals_to_eat, av[5], 6)) > 1)
-			return (err);
+		if (set_sttng_val(&(*sts)->min_meals_to_eat, av[5], 6) > 1)
+			return (6);
 	}
 	else
 		(*sts)->min_meals_to_eat = -1;
-	if ((err = check_settings(*sts)) > 0)
+	err = check_settings(*sts);
+	if (err > 0)
 		return (err);
 	return (0);
 }
@@ -96,7 +98,7 @@ int	init_settings(int ac, char **av, t_settings **sts)
 /**
  * @brief It initialize the structur that represents the dinner party.
 */
-int init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
+int	init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 {
 	int			sttngs_err;
 

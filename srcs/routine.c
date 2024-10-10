@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 23:24:21 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 18:39:16 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ int	is_dead(t_philo *this)
 	int64_t	interval;
 
 	interval = get_elapsed_time(get_philo_lstml(this), 'm');
-	printf("Cheking philo %i is dead or not %ld\n", this->indx + 1, interval);
 	if (interval > get_philo_ttd(this) * 1000L)
 	{
-		printf("Philo %i has died\n", this->indx + 1);
+		set_philo_state(this, DIED);
+		set_waiter_state(this->waiter, ENDED);
+		pthread_mutex_lock(&this->mt_tod);
+		this->time_of_death = interval;
+		pthread_mutex_unlock(&this->mt_tod);
 		return (1);
 	}
 	return (0);
@@ -61,25 +64,19 @@ void	*dinning(void *data)
 	t_philo	*this;
 
 	this = (t_philo *)data;
-	while (42)
+	while (get_waiter_state(this->waiter) != ENDED)
 	{
 		if (get_waiter_state(this->waiter) == PREPARING)
 			continue ;
-		if (this->state == STOPED
+		if (get_philo_state(this) == STOPED
 			&& get_waiter_state(this->waiter) == PREPARING)
 		{
 			this->time_last_meal = get_current_time('m');
-			this->state = EATING;
+			set_philo_state(this, EATING);
 		}
-		if (check_dinner_state(this) == 0)
-			return (NULL);
 		if (eating(this))
 			return (NULL);
-		if (check_dinner_state(this) == 0)
-			return (NULL);
 		sleeping(this);
-		if (check_dinner_state(this) == 0)
-			return (NULL);
 		thinking(this);
 	}
 	return (NULL);

@@ -6,56 +6,42 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 20:42:44y hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:26:24 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <string.h>
 
-static int	check_if_died(t_dinner *dinner, int num)
+static int	check_death(t_philo *philo, t_waiter *waiter)
 {
-	int		indx;
-	t_philo	*philos;
+	int64_t		interval;
 
-	indx = -1;
-	philos = dinner->philos;
-	while (++indx < num)
+	interval = get_elapsed_time(get_philo_lstml(philo), 'm');
+	if (interval > philo->time_to_die * 1000L
+		&& get_philo_state(philo) != EATING)
 	{
-		if (is_dead(&philos[indx]))
-		{
-			pthread_mutex_lock(&dinner->mt_waiter);
-			set_waiter_state(philos[indx].waiter, ENDED);
-			pthread_mutex_unlock(&dinner->mt_waiter);
-			print(&philos[indx], DIED);
-			return (1);
-		}
+		set_waiter_state(waiter, ENDED);
+		print_format_death(philo, interval, &waiter->mt_print);
+		return (1);
 	}
 	return (0);
 }
 
-void	waitering(t_dinner *dinner, t_waiter *waiter)
+static void	waitering1(t_philo *philos, t_waiter *waiter, int num)
 {
-	t_philo	*philos;
 	int		indx;
 
-	pthread_mutex_lock(&dinner->mt_waiter);
 	set_waiter_state(waiter, DINNING);
-	pthread_mutex_unlock(&dinner->mt_waiter);
-	philos = dinner->philos;
 	indx = -1;
-	while (1)
+	while (++indx < num)
 	{
-		if (check_if_died(dinner,
-				dinner->settings->num_of_philos))
+		if (check_death(&philos[indx], philos[indx].waiter))
 			return ;
-		pthread_mutex_lock(&dinner->mt_waiter);
-		if (get_waiter_pfull(waiter) >= dinner->settings->num_of_philos)
-		{
-			pthread_mutex_unlock(&dinner->mt_waiter);
+		if (get_waiter_pfull(waiter) >= num)
 			return ;
-		}
-		pthread_mutex_unlock(&dinner->mt_waiter);
+		if (indx == num - 1)
+			indx = -1;
 		usleep(1);
 	}
 }
@@ -70,19 +56,17 @@ int	main(int ac, char **av)
 	t_dinner	dinner;
 	t_settings	settings;
 	t_waiter	waiter;
-	pthread_t	waiterer;
 
 	if (init_dinner(ac, av, &dinner, &settings))
 		exit (EXIT_FAILURE);
 	init_waiter(&waiter, &dinner);
-	register_philos(&dinner, &waiter);
-	
-	/*if (get_whoisdead(&waiter) > -1)
-		print_format_death(&dinner.philos[get_whoisdead(&waiter)],
-			" has died❕ 🪦 ⚰💀" , &waiter.mt_print);*/
-	/*if (get_waiter_pfull(&waiter) == settings.num_of_philos)
-		set_waiter_state(&waiter, ENDED);*/
-	update_elapsed_time_to(&dinner.dinner_duration, dinner.start_tm, 'm');
-	//clear_dinner(&dinner, &waiter);
+	if (register_philos(&dinner, &waiter) < 0)
+	{
+		clear_dinner(&dinner);
+		return (EXIT_FAILURE);
+	}
+	waitering1(dinner.philos, &waiter, settings.num_of_philos);
+	unregister_philos(dinner.philos, settings.num_of_philos);
+	clear_dinner(&dinner);
 	return (EXIT_SUCCESS);
 }

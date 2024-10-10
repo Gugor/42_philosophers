@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:09:52 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 17:28:05 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:12:09 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	check_sttng(int set, int condition, int err)
  * `0 for no errors`
  * `!0 if the set value is not valid`
 */
-int set_sttng_val(int *set, char *val, int err)
+int	set_sttng_val(int *set, char *val, int err)
 {
 	if (is_valid_digit(val))
 		*set = ft_atoi(val);

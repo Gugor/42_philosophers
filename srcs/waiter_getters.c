@@ -6,12 +6,11 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 12:34:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 22:18:06 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:10:35 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
 
 /*
 * @brief It add one more philo full.

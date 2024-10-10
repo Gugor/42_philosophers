@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:48:15 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 22:07:11 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:23:18 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ int	check_dinner_state(t_philo *philo)
 {
 	t_dinner_state	state;
 
-	//is_dead(philo);
 	pthread_mutex_lock(&philo->waiter->mt_state);
 	state = philo->waiter->state;
 	pthread_mutex_unlock(&philo->waiter->mt_state);
-	if (state == ENDED || philo->state == FULL)
+	if (is_dead(philo) || state == ENDED || philo->state == FULL)
 		return (0);
 	return (1);
 }
@@ -29,7 +28,7 @@ int	check_dinner_state(t_philo *philo)
  * @brief It sets a mutex for the fork of the given hand.
  * @returns `{void}`
 */
-int get_fork(t_philo *this, t_ph_hand hand)
+int	get_fork(t_philo *this, t_ph_hand hand)
 {
 	if (hand == LEFT)
 		print(this, FORK_LEFT);
@@ -46,7 +45,7 @@ int get_fork(t_philo *this, t_ph_hand hand)
  * @brief It sets a mutex for the fork of the given hand.
  * @returns `{void}`
 */
-void put_fork(t_philo *this, t_ph_hand hand)
+void	put_fork(t_philo *this, t_ph_hand hand)
 {
 	if (hand == LEFT)
 		pthread_mutex_unlock(this->left_hand);

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:33:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 20:57:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:09:24 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,11 @@ void	destroy_forks(pthread_mutex_t **data, int amount)
 	data = NULL;
 }
 
-void	clear_dinner(t_dinner *dinner, t_waiter *waiter)
+void	clear_dinner(t_dinner *dinner)
 {
 	int	amount;
 
 	amount = dinner->settings->num_of_philos;
 	destroy_forks(&dinner->forks, amount);
-	pthread_mutex_destroy(&waiter->mt_state);
-	pthread_mutex_destroy(&waiter->mt_deads);
-	pthread_mutex_destroy(&waiter->mt_print);
-	pthread_mutex_destroy(&waiter->mt_start);
+	free(dinner->philos);
 }

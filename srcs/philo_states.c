@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 23:03:25 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:25:20 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,12 @@
 /**
  * @brief Make a philo eat
 */
-int thinking(t_philo *philo)
+int	thinking(t_philo *philo)
 {
-	if (check_dinner_state(philo) == 0)
-		return (1);
 	print(philo, THINKING);
 	philo->state = THINKING;
+	set_philo_state(philo, THINKING);
 	philo->times_thought++;
-	/*if (is_dead(philo))
-	{
-		print(philo, DIED);
-		return (1);
-	}*/
 	return (0);
 }
 
@@ -35,15 +29,8 @@ int thinking(t_philo *philo)
 */
 int	sleeping(t_philo *philo)
 {
-	if (check_dinner_state(philo) == 0)
-		return (1);
-	philo->state = SLEEPING;
-	philo_uwait(philo->time_to_sleep * 1000L, philo);
-	if (is_dead(philo))
-	{
-		print(philo, DIED);
-		return (1);
-	}
+	set_philo_state(philo, SLEEPING);
+	philo_uwait(philo->time_to_sleep * 1000L);
 	print(philo, SLEEPING);
 	philo->times_slept++;
 	return (0);
@@ -54,22 +41,12 @@ int	sleeping(t_philo *philo)
 */
 int	eating(t_philo *philo)
 {
-	if (check_dinner_state(philo) == 0)
-		return (1);
 	get_fork(philo, philo->leader_hand);
-	/*if (check_dinner_state(philo) == 0)
-	{
-		if (!philo->leader_hand)
-			pthread_mutex_unlock(philo->left_hand);
-		if (philo->leader_hand)
-			pthread_mutex_unlock(philo->right_hand);
-		return (1);
-	}*/
 	get_fork(philo, !philo->leader_hand);
-	print(philo, EATING);
+	set_philo_state(philo, EATING);
 	set_philo_lstml(philo);
-	philo->state = EATING;
-	philo_uwait(philo->time_to_eat * 1000L, philo);
+	philo_uwait(philo->time_to_eat * 1000L);
+	print(philo, EATING);
 	put_fork(philo, philo->leader_hand);
 	put_fork(philo, !philo->leader_hand);
 	philo->times_eaten++;

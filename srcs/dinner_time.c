@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 20:01:50 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 15:38:37 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:13:10 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief It updates the elapsed time for a given value.
 */
-int64_t   update_elapsed_time_to(int64_t *new, int64_t start, char precision)
+int64_t	update_elapsed_time_to(int64_t *new, int64_t start, char precision)
 {
 	struct timeval		tv;
 	struct timezone		*tz;
@@ -25,10 +25,11 @@ int64_t   update_elapsed_time_to(int64_t *new, int64_t start, char precision)
 	*new = get_elapsed_time(start, precision);
 	return (*new);
 }
+
 /**
  * @brief It returns the current time with the prcision given seconds 
  * or microseconds.
- * @return `{time_t (long)}`
+ * @return `{time_t (int64_t)}`
 */
 int64_t	get_current_time(char precision)
 {
@@ -62,7 +63,7 @@ int64_t	get_elapsed_time(int64_t start, char precision)
  * @brief It stablish the new tiem for dinner. It should be used
  * when initalizing dinner;
 */
-int64_t set_dinner_time(t_dinner *dinner)
+int64_t	set_dinner_time(t_dinner *dinner)
 {
 	struct timeval	tv;
 	struct timezone	*tz;

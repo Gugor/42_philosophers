@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/09 22:33:13 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:24:09 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ int	register_philos(t_dinner *dinner, t_waiter *waiter)
 	stts = dinner->settings;
 	if (stts->num_of_philos == 1)
 	{
-		printf("%sPhilo 0%s  has died❕ 🪦 ⚰💀\n", BLD_MAGENTA, RESET);
+		printf("🧔 %sPhilo 1%s took left fork!\n", BLD_MAGENTA, RESET);
+		usleep(stts->time_to_die * 1000L);
+		printf("🧔 %sPhilo 1%s  has died❕ 🪦 ⚰💀\n", BLD_MAGENTA, RESET);
 		return (-1);
 	}
 	philos = (t_philo *)malloc(sizeof(t_philo) * stts->num_of_philos);
 	if (!philos)
-		return (1);
+		exit (-1);
 	indx = -1;
 	while (++indx < stts->num_of_philos)
 		init_philo(indx, &philos[indx], dinner, waiter);
@@ -38,11 +40,16 @@ int	register_philos(t_dinner *dinner, t_waiter *waiter)
 	while (++indx < stts->num_of_philos)
 		pthread_create(&(philos[indx].pthread), NULL, dinning, &philos[indx]);
 	dinner->philos = philos;
-	waitering(dinner, waiter);
-	indx = -1;
-	while (++indx < stts->num_of_philos)
-		pthread_join(philos[indx].pthread, NULL);
 	return (0);
+}
+
+void	unregister_philos(t_philo *philos, int num)
+{
+	int	indx;
+
+	indx = -1;
+	while (++indx < num)
+		pthread_join(philos[indx].pthread, NULL);
 }
 
 /**
@@ -76,9 +83,9 @@ t_philo	*init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	philo->time_to_eat = stts->time_to_eat;
 	philo->time_to_sleep = stts->time_to_sleep;
 	philo->min_meals_to_eat = stts->min_meals_to_eat;
-	philo->times_eaten = 0; 
-	philo->times_slept = 0; 
-	philo->times_thought = 0; 
+	philo->times_eaten = 0;
+	philo->times_slept = 0;
+	philo->times_thought = 0;
 	philo->time_last_meal = get_current_time('m');
 	philo->birth = get_current_time('m');
 	philo->time_alive = 0;

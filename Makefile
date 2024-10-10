@@ -21,9 +21,9 @@ MF = Makefile
 
 # Compilation Flags
 CC := cc  
-CFLAGS := #-Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror
 IFLAGS := -I$(INCS_DIR) 
-DFLAGS := -g -fsanitize=thread
+DFLAGS := -g -fsanitize=address
 
 # Files
 SRCS := $(SRCS_DIR)philosophers.c \
@@ -61,10 +61,10 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)%.c $(MF) $(INCS)
 	@printf "$(GREEN)√ $(RESET)$(WHITE)%s$(RESET)\n  " "$<"
 	$(CC) $(DFLAGS) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-clean: $(OBJS)
-	printf "$(RED)X$(RESET) removed $<"
-	@rm -vf $< $(objs) 
+clean:
+	@rm -vf $(OBJS) 
 fclean: clean
+	@rm -vf $(NAME)
 
 re: fclean all
 	@echo "\n==========================================="
