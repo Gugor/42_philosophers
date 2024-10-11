@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:26:24 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:13:37 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	check_death(t_philo *philo, t_waiter *waiter)
 	return (0);
 }
 
-static void	waitering1(t_philo *philos, t_waiter *waiter, int num)
+static void	waitering(t_philo *philos, t_waiter *waiter, int num)
 {
 	int		indx;
 
@@ -62,11 +62,11 @@ int	main(int ac, char **av)
 	init_waiter(&waiter, &dinner);
 	if (register_philos(&dinner, &waiter) < 0)
 	{
-		clear_dinner(&dinner);
+		clear_dinner(&dinner, 0);
 		return (EXIT_FAILURE);
 	}
-	waitering1(dinner.philos, &waiter, settings.num_of_philos);
+	waitering(dinner.philos, &waiter, settings.num_of_philos);
 	unregister_philos(dinner.philos, settings.num_of_philos);
-	clear_dinner(&dinner);
+	clear_dinner(&dinner, 1);
 	return (EXIT_SUCCESS);
 }

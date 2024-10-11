@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:31:16 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:26:46 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:14:46 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,6 @@ typedef struct s_dinner
 /*============================================================================*/
 /*===========================|   Protoypes  |================================ */
 /*============================================================================*/
-void		waitering(t_dinner *dinner, t_waiter *waiter);
-void		*waitering_r(void *data);
 /*____________________________________________________________________________*/
 /*       	...Init...  		                                          */
 int			init_dinner(int ac, char **av, t_dinner *dinner,
@@ -174,7 +172,7 @@ void		print_settings_err(int err);
 /*       	...Memory Handler ...    		                                  */
 void		destroy_forks(pthread_mutex_t **data, int amount);
 void		destroy_philos(t_philo **philos, int amount);
-void		clear_dinner(t_dinner *dinner);
+void		clear_dinner(t_dinner *dinner, int freemode);
 /*____________________________________________________________________________*/
 /*       	...Philo ...            		                                  */
 int			register_philos(t_dinner *dinner, t_waiter *waiter);
@@ -188,7 +186,7 @@ int64_t		get_elapsed_time(int64_t start, char precision);
 int64_t		get_current_time(char precision);
 int64_t		update_elapsed_time_to(int64_t*new, int64_t start, char precision);
 /*____________________________________________________________________________*/
-/*       	...Dinner Time ...    		                                  */
+/*       	...Routine  ...         		                                  */
 int			has_eaten_enough(t_philo *this);
 int			is_dead(t_philo *this);
 void		*dinning(void *data);
@@ -198,7 +196,7 @@ int			thinking(t_philo *philo);
 int			sleeping(t_philo *philo);
 int			eating(t_philo *philo);
 /*____________________________________________________________________________*/
-/*       	...Dinner Time ...    		                                  */
+/*       	...Mutex Handler ...    		                                  */
 int			check_dinner_state(t_philo *philo);
 int			get_fork(t_philo *this, t_ph_hand hand);
 void		put_fork(t_philo *this, t_ph_hand hand);
@@ -214,8 +212,6 @@ int			philo_uwait(int64_t mcs);
 /*       	...Waiter Setters...       		                                  */
 void		set_waiter_pfull(t_waiter *waiter);
 void		set_waiter_state(t_waiter *waiter, t_dinner_state newstate);
-void		set_dead_state(t_waiter *waiter, int indx);
-void		set_waiter_whoisdead(t_waiter *waiter, int indx, int64_t time);
 /*____________________________________________________________________________*/
 /*       	...Waiter Getters...       		                                  */
 int			get_waiter_pfull(t_waiter *waiter);

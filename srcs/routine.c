@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 18:39:16 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:43:44 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ int	is_dead(t_philo *this)
 	{
 		set_philo_state(this, DIED);
 		set_waiter_state(this->waiter, ENDED);
-		pthread_mutex_lock(&this->mt_tod);
-		this->time_of_death = interval;
-		pthread_mutex_unlock(&this->mt_tod);
 		return (1);
 	}
 	return (0);

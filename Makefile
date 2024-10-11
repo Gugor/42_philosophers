@@ -9,7 +9,7 @@ WHITE		:= \033[1;37m
 RESET		:= \033[1;0m
 
 # Target
-NAME := philosophers
+NAME := philo
 
 # Directories
 INCS_DIR := incs/
