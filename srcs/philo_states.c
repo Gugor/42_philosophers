@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:25:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/11 20:47:38 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,12 @@ int	sleeping(t_philo *philo)
 */
 int	eating(t_philo *philo)
 {
-	get_fork(philo, philo->leader_hand);
-	get_fork(philo, !philo->leader_hand);
-	set_philo_state(philo, EATING);
+	get_forks(philo, philo->leader_hand);
 	set_philo_lstml(philo);
+	set_philo_state(philo, EATING);
 	philo_uwait(philo->time_to_eat * 1000L);
 	print(philo, EATING);
-	put_fork(philo, philo->leader_hand);
-	put_fork(philo, !philo->leader_hand);
+	put_forks(philo, philo->leader_hand);
 	philo->times_eaten++;
 	if (has_eaten_enough(philo) > 0)
 		return (1);

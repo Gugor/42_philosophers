@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:31:16 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/11 15:14:46 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/11 20:05:13 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,8 +198,8 @@ int			eating(t_philo *philo);
 /*____________________________________________________________________________*/
 /*       	...Mutex Handler ...    		                                  */
 int			check_dinner_state(t_philo *philo);
-int			get_fork(t_philo *this, t_ph_hand hand);
-void		put_fork(t_philo *this, t_ph_hand hand);
+int			get_forks(t_philo *this, t_ph_hand hand);
+void		put_forks(t_philo *this, t_ph_hand hand);
 /*____________________________________________________________________________*/
 /*       	...Message ...          		                                  */
 void		print_format_death(t_philo *philo, int64_t tod,

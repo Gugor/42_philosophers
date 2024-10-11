@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:24:09 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/11 20:15:55 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,11 @@ void	unregister_philos(t_philo *philos, int num)
 static void	select_fork_for_hands(pthread_mutex_t *forks,
 	t_philo *owner, int num)
 {
+	printf("Leder hand %i (0 Left 1 Right)\n", owner->leader_hand);
 	owner->left_hand = &forks[owner->indx];
+	printf("Philo %i in left hand (%p)\n", owner->indx + 1, &forks[owner->indx]);
 	owner->right_hand = &forks[(owner->indx + 1) % num];
+	printf("Philo %i in right hand (%p)\n", owner->indx + 1, &forks[(owner->indx + 1) % num]);
 }
 
 /**
@@ -78,6 +81,7 @@ t_philo	*init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	philo->indx = indx;
 	philo->leader_hand = indx % 2;
 	select_fork_for_hands(dinner->forks, philo, stts->num_of_philos);
+	printf("\n");
 	philo->state = STOPED;
 	philo->time_to_die = stts->time_to_die;
 	philo->time_to_eat = stts->time_to_eat;
