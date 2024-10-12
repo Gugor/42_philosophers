@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/12 19:44:16 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/12 20:14:19 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	*dinning(void *data)
 			this->time_last_meal = get_current_time('m');
 			set_philo_state(this, EATING);
 		}
+		if (this->indx % 2 == 1)
+			philo_uwait(100);
 		if (eating(this))
 			return (NULL);
 		sleeping(this);
