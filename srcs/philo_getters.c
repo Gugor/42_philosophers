@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 21:56:12 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:24:42 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:43:44 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int64_t	get_philo_ttd(t_philo *this)
 	int64_t	time;
 
 	pthread_mutex_lock(&this->mt_ttd);
-	time = this->time_of_death;
+	time = this->time_to_die;
 	pthread_mutex_unlock(&this->mt_ttd);
 	return (time);
 }

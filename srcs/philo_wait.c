@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 16:12:32 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:05:50 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:07:05 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ int	philo_uwait(int64_t mcs)
 	int64_t	start;
 	int64_t	remanent;
 	int64_t	elapsed;
-	size_t	indx;
 
 	start = get_current_time('m');
 	elapsed = get_elapsed_time(start, 'm');
 	remanent = mcs - elapsed;
-	indx = 1;
 	while (elapsed < mcs)
 	{
 		elapsed = get_elapsed_time(start, 'm');

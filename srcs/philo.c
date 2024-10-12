@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/11 20:15:55 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:55:18 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,11 @@ static void	select_fork_for_hands(pthread_mutex_t *forks,
 {
 	printf("Leder hand %i (0 Left 1 Right)\n", owner->leader_hand);
 	owner->left_hand = &forks[owner->indx];
-	printf("Philo %i in left hand (%p)\n", owner->indx + 1, &forks[owner->indx]);
+	printf("Philo %i in left hand (%p)\n", owner->indx + 1,
+		&forks[owner->indx]);
 	owner->right_hand = &forks[(owner->indx + 1) % num];
-	printf("Philo %i in right hand (%p)\n", owner->indx + 1, &forks[(owner->indx + 1) % num]);
+	printf("Philo %i in right hand (%p)\n", owner->indx + 1,
+		&forks[(owner->indx + 1) % num]);
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:21:32 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/11 20:29:13 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:54:51 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	print_format_fork(t_philo *philo, char *msg,
 	printf("🧔 %s[%lims]%s %sPhilo%s %i ", BLD_YELLOW, time / 1000L, RESET,
 		BLD_MAGENTA, RESET, philo->indx + 1);
 	state = get_philo_state(philo);
-	if (state == FORK_LEFT || state == PUT_LEFT) 
+	if (state == FORK_LEFT || state == PUT_LEFT)
 		printf("%s (%p)", msg, &(*philo->left_hand));
 	if (state == FORK_RIGHT || state == PUT_RIGHT)
 		printf("%s (%p)", msg, &(*philo->right_hand));
@@ -74,9 +74,11 @@ void	print(t_philo *philo, t_philo_state state)
 	if (state == FULL)
 		print_format(philo, " is full❕ 🥣🫄", &philo->waiter->mt_print);
 	if (state == FORK_LEFT)
-		print_format_fork(philo, " took left fork❕ 🫱", &philo->waiter->mt_print);
+		print_format_fork(philo, " took left fork❕ 🫱",
+			&philo->waiter->mt_print);
 	if (state == FORK_RIGHT)
-		print_format_fork(philo, " took right fork❕ 🫲", &philo->waiter->mt_print);
+		print_format_fork(philo, " took right fork❕ 🫲",
+			&philo->waiter->mt_print);
 	if (state == PUT_LEFT)
 		print_format_fork(philo, " put left fork!🫳", &philo->waiter->mt_print);
 	if (state == PUT_RIGHT)

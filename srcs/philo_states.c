@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/11 20:47:38 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:44:37 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,13 @@
 */
 int	thinking(t_philo *philo)
 {
-	print(philo, THINKING);
-	philo->state = THINKING;
+	int64_t	think;
+
 	set_philo_state(philo, THINKING);
+	think = get_elapsed_time(get_philo_lstml(philo), 'm');
+	think = (get_philo_ttd(philo) * 1000L) - think;
+	philo_uwait(think >> 1);
+	print(philo, THINKING);
 	philo->times_thought++;
 	return (0);
 }
