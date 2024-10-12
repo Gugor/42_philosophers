@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/11 20:48:05 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/13 00:06:20 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	check_death(t_philo *philo, t_waiter *waiter)
 		&& get_philo_state(philo) != EATING)
 	{
 		set_waiter_state(waiter, ENDED);
+		usleep(1000);
 		print_format_death(philo, interval, &waiter->mt_print);
 		return (1);
 	}
