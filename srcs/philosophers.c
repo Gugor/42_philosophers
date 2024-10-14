@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/13 00:06:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:31:45 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@ static int	check_death(t_philo *philo, t_waiter *waiter)
 	int64_t		interval;
 
 	interval = get_elapsed_time(get_philo_lstml(philo), 'm');
-	if (interval > philo->time_to_die * 1000L + 1000L
-		&& get_philo_state(philo) != EATING)
+	if (interval > philo->time_to_die + 1000L)
 	{
 		set_waiter_state(waiter, ENDED);
-		usleep(1000);
+		usleep(3000);
 		print_format_death(philo, interval, &waiter->mt_print);
 		return (1);
 	}
@@ -43,7 +42,6 @@ static void	waitering(t_philo *philos, t_waiter *waiter, int num)
 			return ;
 		if (indx == num - 1)
 			indx = -1;
-		usleep(1);
 	}
 }
 

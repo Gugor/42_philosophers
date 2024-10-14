@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 20:01:50 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/10 19:13:10 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:09:31 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int64_t	get_current_time(char precision)
 	if (precision == 'm' || precision == 'M')
 		return ((tv.tv_sec * 1000000L) + tv.tv_usec);
 	if (precision == 'c' || precision == 'C')
-		return (((tv.tv_sec * 1000000L) + tv.tv_usec) / 1000L);
+		return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000L));
 	return (-1);
 }
 

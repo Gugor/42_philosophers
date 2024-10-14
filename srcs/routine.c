@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/13 00:04:14 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:31:16 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	is_dead(t_philo *this)
 	int64_t	interval;
 
 	interval = get_elapsed_time(get_philo_lstml(this), 'm');
-	if (interval > get_philo_ttd(this) * 1000L)
+	if (interval > get_philo_ttd(this))
 	{
 		set_philo_state(this, DIED);
 		set_waiter_state(this->waiter, ENDED);
@@ -71,8 +71,6 @@ void	*dinning(void *data)
 			this->time_last_meal = get_current_time('m');
 			set_philo_state(this, EATING);
 		}
-		if (this->indx % 2 == 1)
-			philo_uwait(100);
 		if (eating(this))
 			return (NULL);
 		sleeping(this);

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/12 20:11:07 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:28:42 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@
 */
 int	thinking(t_philo *philo)
 {
-	int64_t	think;
-
-	set_philo_state(philo, THINKING);
-	think = get_elapsed_time(get_philo_lstml(philo), 'm');
-	think = (get_philo_ttd(philo) * 1000L) - think;
-	philo_uwait(think);
 	print(philo, THINKING);
 	philo->times_thought++;
 	return (0);
@@ -33,8 +27,7 @@ int	thinking(t_philo *philo)
 */
 int	sleeping(t_philo *philo)
 {
-	set_philo_state(philo, SLEEPING);
-	philo_uwait(philo->time_to_sleep * 1000L);
+	philo_uwait(philo->time_to_sleep);
 	print(philo, SLEEPING);
 	philo->times_slept++;
 	return (0);
@@ -45,12 +38,13 @@ int	sleeping(t_philo *philo)
 */
 int	eating(t_philo *philo)
 {
-	get_forks(philo, philo->leader_hand);
+	if (philo->indx % 2 == 0)
+		philo_uwait(2000);
+	get_forks(philo);
 	set_philo_lstml(philo);
-	set_philo_state(philo, EATING);
-	philo_uwait(philo->time_to_eat * 1000L);
+	philo_uwait(philo->time_to_eat);
 	print(philo, EATING);
-	put_forks(philo, philo->leader_hand);
+	put_forks(philo);
 	philo->times_eaten++;
 	if (has_eaten_enough(philo) > 0)
 		return (1);

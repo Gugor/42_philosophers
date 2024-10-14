@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:31:16 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/11 20:05:13 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:29:35 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_waiter
 	pthread_mutex_t	mt_print;
 	pthread_mutex_t	mt_whoisdead;
 	int				whoisdead;
+	int				num_of_philos;
 	int64_t			time_of_death;
 	int64_t			dinner_start;
 	pthread_mutex_t	mt_start;
@@ -198,8 +199,8 @@ int			eating(t_philo *philo);
 /*____________________________________________________________________________*/
 /*       	...Mutex Handler ...    		                                  */
 int			check_dinner_state(t_philo *philo);
-int			get_forks(t_philo *this, t_ph_hand hand);
-void		put_forks(t_philo *this, t_ph_hand hand);
+void		get_forks(t_philo *this);
+void		put_forks(t_philo *this);
 /*____________________________________________________________________________*/
 /*       	...Message ...          		                                  */
 void		print_format_death(t_philo *philo, int64_t tod,

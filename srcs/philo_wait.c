@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 16:12:32 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/12 19:07:05 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:30:50 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	philo_uwait(int64_t mcs)
 		elapsed = get_elapsed_time(start, 'm');
 		remanent = mcs - elapsed;
 		if (remanent > 1000)
-			usleep(remanent / 64);
+			usleep(remanent * 0.5f);
 	}
 	return (0);
 }

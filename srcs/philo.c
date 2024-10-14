@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/12 19:55:18 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:32:26 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	register_philos(t_dinner *dinner, t_waiter *waiter)
 	if (stts->num_of_philos == 1)
 	{
 		printf("🧔 %sPhilo 1%s took left fork!\n", BLD_MAGENTA, RESET);
-		usleep(stts->time_to_die * 1000L);
+		usleep(stts->time_to_die);
 		printf("🧔 %sPhilo 1%s  has died❕ 🪦 ⚰💀\n", BLD_MAGENTA, RESET);
 		return (-1);
 	}
@@ -60,11 +60,10 @@ void	unregister_philos(t_philo *philos, int num)
 static void	select_fork_for_hands(pthread_mutex_t *forks,
 	t_philo *owner, int num)
 {
-	printf("Leder hand %i (0 Left 1 Right)\n", owner->leader_hand);
 	owner->left_hand = &forks[owner->indx];
+	owner->right_hand = &forks[(owner->indx + 1) % num];
 	printf("Philo %i in left hand (%p)\n", owner->indx + 1,
 		&forks[owner->indx]);
-	owner->right_hand = &forks[(owner->indx + 1) % num];
 	printf("Philo %i in right hand (%p)\n", owner->indx + 1,
 		&forks[(owner->indx + 1) % num]);
 }
@@ -85,9 +84,9 @@ t_philo	*init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	select_fork_for_hands(dinner->forks, philo, stts->num_of_philos);
 	printf("\n");
 	philo->state = STOPED;
-	philo->time_to_die = stts->time_to_die;
-	philo->time_to_eat = stts->time_to_eat;
-	philo->time_to_sleep = stts->time_to_sleep;
+	philo->time_to_die = stts->time_to_die * 1000L;
+	philo->time_to_eat = stts->time_to_eat * 1000L;
+	philo->time_to_sleep = stts->time_to_sleep * 1000L;
 	philo->min_meals_to_eat = stts->min_meals_to_eat;
 	philo->times_eaten = 0;
 	philo->times_slept = 0;
