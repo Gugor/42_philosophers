@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/13 00:21:36 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:56:14 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,23 @@ int	create_forks(pthread_mutex_t **pforks, int amount)
 /**
  * @brief Initialize waiter
 */
-void	init_waiter(t_waiter *wtr, t_dinner *dinner)
+int	init_waiter(t_waiter *wtr, t_dinner *dinner)
 {
 	wtr->state = PREPARING;
 	wtr->dinner_start = dinner->start_tm;
-	wtr->whoisdead = -1;
 	wtr->philos_full = 0;
 	wtr->num_of_philos = dinner->settings->num_of_philos;
-	pthread_mutex_init(&wtr->mt_state, NULL);
-	pthread_mutex_init(&wtr->mt_print, NULL);
-	pthread_mutex_init(&wtr->mt_whoisdead, NULL);
-	pthread_mutex_init(&wtr->mt_start, NULL);
-	pthread_mutex_init(&wtr->mt_phfull, NULL);
+	if (pthread_mutex_init(&wtr->mt_state, NULL) == -1)
+		return(mutex_init_error());
+	if (pthread_mutex_init(&wtr->mt_print, NULL) == -1)
+		return(mutex_init_error());
+	if (pthread_mutex_init(&wtr->mt_whoisdead, NULL) == -1)
+		return(mutex_init_error());
+	if (pthread_mutex_init(&wtr->mt_start, NULL) == -1)
+		return(mutex_init_error());
+	if (pthread_mutex_init(&wtr->mt_phfull, NULL) == -1)
+		return(mutex_init_error());
+	return (0);
 }
 
 /**
@@ -103,13 +108,13 @@ int	init_dinner(int ac, char **av, t_dinner *dinner, t_settings *settings)
 {
 	int			sttngs_err;
 
-	(void)dinner;
 	if (ac <= 4 || ac > 6)
 	{
 		print_settings_err(1);
 		return (1);
 	}
-	pthread_mutex_init(&dinner->mt_waiter, NULL);
+	if (pthread_mutex_init(&dinner->mt_waiter, NULL))
+		return (mutex_init_error());
 	set_dinner_time(dinner);
 	sttngs_err = init_settings(ac, av, &settings);
 	if (settings->min_meals_to_eat == 0)

@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:02:01 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/14 19:31:45 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:02:30 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	waitering(t_philo *philos, t_waiter *waiter, int num)
 			return ;
 		if (indx == num - 1)
 			indx = -1;
+		usleep(1);
 	}
 }
 
@@ -57,8 +58,12 @@ int	main(int ac, char **av)
 	t_waiter	waiter;
 
 	if (init_dinner(ac, av, &dinner, &settings))
-		exit (EXIT_FAILURE);
-	init_waiter(&waiter, &dinner);
+		return (EXIT_FAILURE);
+	if (init_waiter(&waiter, &dinner))
+	{
+		clear_dinner(&dinner, 0);
+		return (EXIT_FAILURE);
+	}
 	if (register_philos(&dinner, &waiter) < 0)
 	{
 		clear_dinner(&dinner, 0);

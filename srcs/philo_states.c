@@ -6,30 +6,28 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/14 22:44:52 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:57:54 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
 /**
- * @brief Make a philo eat
+ * @brief Make a philo think
 */
 int	thinking(t_philo *philo)
 {
 	print(philo, THINKING);
-	philo->times_thought++;
 	return (0);
 }
 
 /**
- * @brief Make a philo eat
+ * @brief Make a philo sleep
 */
 int	sleeping(t_philo *philo)
 {
 	philo_uwait(philo->time_to_sleep);
 	print(philo, SLEEPING);
-	philo->times_slept++;
 	return (0);
 }
 

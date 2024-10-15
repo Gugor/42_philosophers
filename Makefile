@@ -23,7 +23,7 @@ MF = Makefile
 CC := cc  
 CFLAGS := -Wall -Wextra -Werror
 IFLAGS := -I$(INCS_DIR) 
-DFLAGS := -g #-fsanitize=thread
+DFLAGS := -g #-fsanitize=address
 
 # Files
 SRCS := $(SRCS_DIR)philosophers.c \

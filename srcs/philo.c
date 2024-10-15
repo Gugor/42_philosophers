@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/14 19:32:26 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:00:34 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,8 @@ t_philo	*init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	philo->time_to_sleep = stts->time_to_sleep * 1000L;
 	philo->min_meals_to_eat = stts->min_meals_to_eat;
 	philo->times_eaten = 0;
-	philo->times_slept = 0;
-	philo->times_thought = 0;
 	philo->time_last_meal = get_current_time('m');
 	philo->birth = get_current_time('m');
-	philo->time_alive = 0;
 	pthread_mutex_init(&philo->mt_lstml, NULL);
 	pthread_mutex_init(&philo->mt_ttd, NULL);
 	return (philo);

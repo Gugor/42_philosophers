@@ -6,12 +6,25 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:54:22 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/08 15:45:57 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:33:20 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**
+ * @brief The mutex initialization error
+ */
+int	mutex_init_error(void)
+{
+	errno = ENOMEM;
+	printf("mutex init error\n");	
+	return(EXIT_FAILURE);
+}
+
+/**
+ * @brief It print an error showing the error usage of this program.
+ */
 void	printf_usage_error(void)
 {
 	printf(" %sUsage:%s ./philosophers", BLD_WHITE, RESET);
@@ -34,7 +47,8 @@ void	printf_usage_error(void)
 }
 
 /**
- * @brief 
+ * @brief It prints the error message of the given type of error
+ * occurred in the input format of the arguments passed to this program. 
 */
 void	print_input_err(int err)
 {
@@ -62,7 +76,8 @@ void	print_input_err(int err)
 }
 
 /**
- * @brief 
+ * @brief It prints the error message of the given type in case input
+ * arguments are not in the valid range accepted by the program.
 */
 void	print_settings_range_err(int err)
 {

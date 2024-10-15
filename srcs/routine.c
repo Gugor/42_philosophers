@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/14 19:31:16 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:03:30 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,6 @@ int	has_eaten_enough(t_philo *this)
 }
 
 /**
-* @brief It finds wether the philosohpers has died or not, and set
-* the waiter state to ENDED.
-* @param this `{t_philo}` a pointer to the philo structure to check on.
-* @returns `{int}`
-*/
-int	is_dead(t_philo *this)
-{
-	int64_t	interval;
-
-	interval = get_elapsed_time(get_philo_lstml(this), 'm');
-	if (interval > get_philo_ttd(this))
-	{
-		set_philo_state(this, DIED);
-		set_waiter_state(this->waiter, ENDED);
-		return (1);
-	}
-	return (0);
-}
-
-/**
  * @brief The routine for each philo.
 */
 void	*dinning(void *data)
@@ -74,7 +54,11 @@ void	*dinning(void *data)
 		if (eating(this))
 			return (NULL);
 		sleeping(this);
+		if(check_dinner_state(this) == ENDED)
+			return (NULL);
 		thinking(this);
+		if(check_dinner_state(this) == ENDED)
+			return (NULL);
 	}
 	return (NULL);
 }
