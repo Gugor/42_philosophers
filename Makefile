@@ -21,7 +21,7 @@ MF = Makefile
 
 # Compilation Flags
 CC := cc  
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -O3 
 IFLAGS := -I$(INCS_DIR) 
 DFLAGS := -g #-fsanitize=address
 

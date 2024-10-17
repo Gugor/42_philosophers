@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:12:48 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/15 11:57:54 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:33:03 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	sleeping(t_philo *philo)
 int	eating(t_philo *philo)
 {
 	if (philo->indx % 2 == 0)
-		philo_uwait(4000);
+		philo_uwait(5000);
 	get_forks(philo);
 	set_philo_lstml(philo);
 	philo_uwait(philo->time_to_eat);

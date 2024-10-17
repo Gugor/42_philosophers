@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 19:54:22 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/15 11:33:20 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:51:04 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 int	mutex_init_error(void)
 {
 	errno = ENOMEM;
-	printf("mutex init error\n");	
-	return(EXIT_FAILURE);
+	printf("mutex init error\n");
+	return (EXIT_FAILURE);
 }
 
 /**

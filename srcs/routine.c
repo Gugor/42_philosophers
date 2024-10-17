@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:06:00 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/15 12:03:30 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:50:31 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	*dinning(void *data)
 		if (eating(this))
 			return (NULL);
 		sleeping(this);
-		if(check_dinner_state(this) == ENDED)
+		if (check_dinner_state(this) == ENDED)
 			return (NULL);
 		thinking(this);
-		if(check_dinner_state(this) == ENDED)
+		if (check_dinner_state(this) == ENDED)
 			return (NULL);
 	}
 	return (NULL);

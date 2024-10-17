@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:47:53 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/15 12:00:34 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:44:41 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ t_philo	*init_philo(int indx, t_philo *philo, t_dinner *dinner, t_waiter *wtr)
 	stts = dinner->settings;
 	philo->waiter = wtr;
 	philo->indx = indx;
-	philo->leader_hand = indx % 2;
 	select_fork_for_hands(dinner->forks, philo, stts->num_of_philos);
 	printf("\n");
 	philo->state = STOPED;

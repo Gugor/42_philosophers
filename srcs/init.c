@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:20:17 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/15 11:56:14 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:32:10 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ int	init_waiter(t_waiter *wtr, t_dinner *dinner)
 	wtr->philos_full = 0;
 	wtr->num_of_philos = dinner->settings->num_of_philos;
 	if (pthread_mutex_init(&wtr->mt_state, NULL) == -1)
-		return(mutex_init_error());
+		return (mutex_init_error());
 	if (pthread_mutex_init(&wtr->mt_print, NULL) == -1)
-		return(mutex_init_error());
+		return (mutex_init_error());
 	if (pthread_mutex_init(&wtr->mt_whoisdead, NULL) == -1)
-		return(mutex_init_error());
+		return (mutex_init_error());
 	if (pthread_mutex_init(&wtr->mt_start, NULL) == -1)
-		return(mutex_init_error());
+		return (mutex_init_error());
 	if (pthread_mutex_init(&wtr->mt_phfull, NULL) == -1)
-		return(mutex_init_error());
+		return (mutex_init_error());
 	return (0);
 }
 

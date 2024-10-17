@@ -6,7 +6,7 @@
 /*   By: hmontoya <hmontoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:31:16 by hmontoya          #+#    #+#             */
-/*   Updated: 2024/10/15 12:00:16 by hmontoya         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:50:04 by hmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ typedef struct s_philo
 	pthread_mutex_t	mt_ttd;
 	pthread_mutex_t	mt_state;
 	t_philo_state	state;
-	t_ph_hand		leader_hand;	
 	int64_t			time_to_die;
 	int64_t			time_to_eat;
 	int64_t			time_last_meal;
