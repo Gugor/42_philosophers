@@ -38,10 +38,6 @@ a philosopher dies of starvation.
 ![philo execution screenshot](assets/philosophers-execution-screenshot.png)
 
 ## Technologies
-### Languajes
-- c 99% 
-- Make 1%
-### Compiler & Platform
 - cc
 - x86-64
 - Tested on Linux
